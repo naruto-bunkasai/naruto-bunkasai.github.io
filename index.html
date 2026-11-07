@@ -337,6 +337,78 @@
   .site-footer .name { font-weight: 600; font-size: 28px; letter-spacing: .3em; }
   .site-footer .sub { font-family: var(--latin); font-style: italic; font-size: 22px; margin-top: 2px; }
   .site-footer .en { font-family: var(--latin); font-weight: 600; font-size: 10.5px; letter-spacing: .3em; margin-top: 8px; text-transform: uppercase; }
+
+  /* ===== 本番に入れる演出（2・3・7） ===== */
+
+  /* 2. 画面に入ったときに、少し下からふわっと出る（JSが data-reveal を付け、見えたら is-in を足す） */
+  .js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+
+  /* 3. スクロールの案内（画面いっぱいのバナーの下端） */
+  .scroll-cue {
+    position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: #fff; text-decoration: none; font-family: var(--latin); font-weight: 600;
+    font-size: 11px; letter-spacing: .32em; text-indent: .32em; text-shadow: 0 1px 6px rgba(0,0,0,.45);
+    opacity: 0; transition: opacity .8s ease 1.6s;
+  }
+  .hero.ready .scroll-cue { opacity: .92; }
+  .scroll-cue .line { position: relative; width: 1px; height: 46px; background: rgba(255,255,255,.35); overflow: hidden; }
+  .scroll-cue .line::after {
+    content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: #fff;
+    animation: cue 1.8s cubic-bezier(.6,0,.4,1) infinite;
+  }
+  @keyframes cue { to { top: 100%; } }
+  @media (max-width: 640px) { .scroll-cue { display: none; } }
+
+  /* 7. 本番までの日数 */
+  .countdown {
+    grid-column: 1 / -1; margin: 6px 0 0; text-align: center;
+    font-size: 14px; letter-spacing: .12em; color: var(--navy-soft);
+  }
+  .countdown b { font-family: var(--latin); font-weight: 600; font-size: 34px; color: var(--red); margin: 0 .25em; letter-spacing: 0; display: inline-block; min-width: 1.4em; }
+  .countdown[hidden] { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+    .scroll-cue .line::after { animation: none; top: 30%; }
+  }
+
+  /* ===== 見比べ用の演出（1・4・5・6）。html に fx-… のクラスが付いたときだけ効く ===== */
+
+  /* 1. 昼から夜へ：「一日まるごと」の節の色が、スクロールに合わせて昼→夕方→夜へ移る（色はJSが --sky に入れる） */
+  .fx-daynight .flow { background: var(--sky, var(--beige)); color: var(--sky-ink, var(--navy)); }
+  .fx-daynight .flow p, .fx-daynight .flow .note { color: inherit; opacity: .85; }
+  .fx-daynight .flow .t, .fx-daynight .flow .eyebrow { color: var(--sky-accent, var(--red)); }
+  .fx-daynight .flow li { transition: opacity .5s ease, transform .5s ease; }
+  .fx-daynight .flow li:not(.now) { opacity: .4; }
+  .fx-daynight .flow li.now { transform: translateY(-4px); }
+
+  /* 4. バナーの奥行き：背景はゆっくり、筆の跡とタイトルは逆向きに少し動く（量はJSが入れる） */
+  .fx-parallax .hero .bg { translate: 0 var(--bgy, 0px); }
+  .fx-parallax .hero .mark { translate: 0 var(--mky, 0px); }
+
+  /* 5. カードを指すと少し浮き、写真がゆっくり寄る（流れは止めない） */
+  @media (hover: hover) {
+    .fx-cardhover .kcard { transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease; }
+    .fx-cardhover .kcard .bg { transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
+    .fx-cardhover .kcard:hover { transform: translateY(-8px); box-shadow: 0 14px 28px rgba(20,40,90,.18); }
+    .fx-cardhover .kcard:hover .bg { transform: scale(1.07); }
+  }
+
+  /* 6. いちごとキラキラ：背景と筆の跡のあいだに canvas を重ねる */
+  .hero .sparkles { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; display: none; }
+  .fx-sparkle .hero .sparkles { display: block; }
+
+  /* 見比べ用の切り替えパネル（URLに ?try を付けたときだけ出る） */
+  .fx-panel {
+    position: fixed; right: 12px; bottom: 12px; z-index: 50;
+    background: rgba(20,40,90,.92); color: #fff; border-radius: 10px; padding: 10px 14px 12px;
+    font-size: 13px; line-height: 1.9; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  }
+  .fx-panel b { display: block; font-size: 12px; letter-spacing: .1em; opacity: .8; }
+  .fx-panel label { display: block; cursor: pointer; }
+  .fx-panel input { margin-right: 6px; vertical-align: -2px; }
 </style>
 </head>
 <body>
@@ -356,17 +428,20 @@
   <section class="hero">
     <h1 class="sr-only">鳴門文化祭 -Berry happy-（NARUTO CULTURE FESTIVAL 2026）</h1>
     <img class="bg" src="assets/img/hero-bg.webp" srcset="assets/img/hero-bg-1000.webp 1000w, assets/img/hero-bg.webp 2000w" sizes="100vw" alt="昼の縁日と夜の旧校舎" width="2000" height="867" fetchpriority="high">
+    <canvas class="sparkles" aria-hidden="true"></canvas>
     <div class="mark">
-      <img class="brush" src="assets/img/hero-brush.webp" srcset="assets/img/hero-brush-730.webp 730w, assets/img/hero-brush.webp 1453w" sizes="(max-width: 640px) 92vw, 49vw" alt="" width="1453" height="856">
+      <img class="brush" src="assets/img/hero-brush.webp" srcset="assets/img/hero-brush-730.webp 730w, assets/img/hero-brush.webp 1453w" sizes="(max-width: 640px) 92vw, (max-width: 960px) 72vw, 52vw" alt="" width="1453" height="856">
       <img class="title" src="assets/img/hero-title.webp" alt="" width="904" height="506">
     </div>
+    <a class="scroll-cue" href="#info" aria-label="下へ進む"><span>SCROLL</span><span class="line"></span></a>
   </section>
 
-  <section class="info-bar" aria-label="開催の概要">
+  <section class="info-bar" id="info" aria-label="開催の概要">
     <div class="wrap">
       <p class="date"><span class="y">2026</span><span class="md">12.5</span><span class="dow">土</span><span class="time">10:00–19:00</span></p>
       <p class="venue">TODAベリーファーム<br>旧北灘西小学校</p>
       <p class="fee"><strong>入場無料</strong><small>飲食・一部企画は有料</small></p>
+      <p class="countdown" id="countdown" hidden>開催まで あと<b id="days">0</b>日</p>
     </div>
   </section>
 
@@ -572,6 +647,149 @@
     const go = () => hero.classList.add("ready");
     Promise.all(imgs.map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve())).then(go);
     setTimeout(go, 2500);
+  })();
+  // ===== 2. 画面に入ったら、ふわっと出す =====
+  (function () {
+    const groups = [
+      [".pickup .wrap", 0], [".marquee", .1], [".flow .center", 0], [".access .eyebrow", 0], [".access .heading", 0],
+      [".access .cols > *", .12], [".news .wrap > *", .1], [".faq .eyebrow", 0], [".faq .heading", 0], [".faq details", .08],
+      [".cats li", .07], [".flow li", .14], [".flow .note", 0]
+    ];
+    const els = [];
+    groups.forEach(([sel, step]) => document.querySelectorAll(sel).forEach((el, i) => {
+      el.setAttribute("data-reveal", ""); el.style.setProperty("--d", (step * i).toFixed(2) + "s"); els.push(el);
+    }));
+    if (!("IntersectionObserver" in window)) { els.forEach(el => el.classList.add("is-in")); return; }
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+    }), { rootMargin: "0px 0px -8% 0px" });
+    els.forEach(el => io.observe(el));
+  })();
+
+  // ===== 7. 本番までの日数（日本時間で数える。当日は「本日開催」、終わったら出さない） =====
+  (function () {
+    const box = document.getElementById("countdown"), num = document.getElementById("days");
+    const nowJst = new Date(Date.now() + 9 * 3600e3);
+    const today = Date.UTC(nowJst.getUTCFullYear(), nowJst.getUTCMonth(), nowJst.getUTCDate());
+    const days = Math.round((Date.UTC(2026, 11, 5) - today) / 86400e3);
+    if (days < 0) return;
+    box.hidden = false;
+    if (days === 0) { box.innerHTML = "<b>本日開催！</b>"; return; }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { num.textContent = days; return; }
+    let done = false;
+    const run = () => {
+      if (done) return; done = true;
+      const t0 = performance.now(), dur = 1200;
+      const step = t => {
+        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        num.textContent = Math.round(days * e);
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { run(); io.disconnect(); } });
+      io.observe(box);
+    } else run();
+  })();
+
+  // ===== 見比べ用（1・4・5・6）。?try を付けたときだけパネルを出す。?try=1,4 のように番号で最初から入れられる =====
+  (function () {
+    const root = document.documentElement;
+    const FX = { 1: ["fx-daynight", "1 昼から夜へ"], 4: ["fx-parallax", "4 バナーの奥行き"], 5: ["fx-cardhover", "5 カードを指す"], 6: ["fx-sparkle", "6 いちごとキラキラ"] };
+    const q = new URLSearchParams(location.search);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const has = c => root.classList.contains(c) && !reduce;
+    const flow = document.querySelector(".flow"), items = [...flow.querySelectorAll("li")];
+    const hero = document.querySelector(".hero");
+
+    // 1. 昼→夕方→夜の色（生成り → 茜 → 紺）を、「一日まるごと」の節の位置に合わせて混ぜる
+    const SKY = [[244, 237, 221], [246, 206, 168], [222, 128, 118], [52, 44, 96], [20, 28, 64]];
+    const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    function sky(p) {
+      const x = p * (SKY.length - 1), i = Math.min(SKY.length - 2, Math.floor(x));
+      return mix(SKY[i], SKY[i + 1], x - i);
+    }
+
+    function onScroll() {
+      if (has("fx-daynight")) {
+        const r = flow.getBoundingClientRect(), vh = innerHeight;
+        const p = Math.min(1, Math.max(0, (vh * .9 - r.top) / (vh * .8)));  // 節の上端が画面の下から1割→上から1割へ動くあいだに、昼→夜
+        flow.style.setProperty("--sky", `rgb(${sky(p)})`);
+        flow.style.setProperty("--sky-ink", p > .55 ? "#fff" : "var(--navy)");
+        flow.style.setProperty("--sky-accent", p > .55 ? "#FFC7A8" : "var(--red)");
+        const now = Math.min(2, Math.floor(p * 3));
+        items.forEach((li, i) => li.classList.toggle("now", i === now));
+      } else {
+        ["--sky", "--sky-ink", "--sky-accent"].forEach(v => flow.style.removeProperty(v));
+        items.forEach(li => li.classList.remove("now"));
+      }
+      if (has("fx-parallax")) {
+        const y = Math.min(scrollY, hero.offsetHeight);
+        hero.style.setProperty("--bgy", (y * .35).toFixed(1) + "px");
+        hero.style.setProperty("--mky", (y * -.12).toFixed(1) + "px");
+      }
+    }
+    addEventListener("scroll", () => requestAnimationFrame(onScroll), { passive: true });
+    addEventListener("resize", onScroll);
+
+    if (q.has("try")) {
+      (q.get("try") || "").split(",").forEach(n => FX[n] && root.classList.add(FX[n][0]));
+      const panel = document.createElement("div");
+      panel.className = "fx-panel";
+      panel.innerHTML = "<b>見比べ用</b>" + Object.values(FX).map(([c, label]) =>
+        `<label><input type="checkbox" data-c="${c}"${root.classList.contains(c) ? " checked" : ""}>${label}</label>`).join("");
+      panel.addEventListener("change", e => { root.classList.toggle(e.target.dataset.c, e.target.checked); onScroll(); });
+      document.body.appendChild(panel);
+    }
+    onScroll();
+
+    // 6. いちごとキラキラ：数を絞り、ゆっくり上へ漂わせる。バナーが見えていないときは止める
+    const cv = hero.querySelector(".sparkles"), ctx = cv.getContext("2d");
+    let W = 0, H = 0, parts = [], visible = true;
+    function size() {
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      parts = Array.from({ length: Math.round(Math.min(26, W / 50)) }, () => spawn(true));
+    }
+    function spawn(initial) {
+      const isBerry = Math.random() < .3;
+      return { x: Math.random() * W, y: initial ? Math.random() * H : H + 20, r: isBerry ? 6 + Math.random() * 5 : 3 + Math.random() * 5,
+        vy: .15 + Math.random() * .35, sway: Math.random() * 6.28, berry: isBerry, tw: Math.random() * 6.28, rot: (Math.random() - .5) * .6 };
+    }
+    function star(x, y, r, a) {
+      ctx.save(); ctx.translate(x, y); ctx.globalAlpha = a; ctx.fillStyle = "#fff";
+      ctx.shadowColor = "rgba(255,240,200,.9)"; ctx.shadowBlur = 8;
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) { const rr = i % 2 ? r * .28 : r, t = i * Math.PI / 4; ctx.lineTo(Math.cos(t) * rr, Math.sin(t) * rr); }
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+    function berry(x, y, r, a, rot) {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.globalAlpha = a;
+      ctx.fillStyle = "#E23B4E"; ctx.beginPath();
+      ctx.moveTo(0, r * 1.25); ctx.bezierCurveTo(-r * 1.3, r * .2, -r * 1.05, -r * .9, 0, -r * .75);
+      ctx.bezierCurveTo(r * 1.05, -r * .9, r * 1.3, r * .2, 0, r * 1.25); ctx.fill();
+      ctx.fillStyle = "#FFE6A8";
+      for (const [dx, dy] of [[-.4, -.1], [.35, -.15], [0, .3], [-.25, .6], [.3, .55]]) { ctx.beginPath(); ctx.arc(dx * r, dy * r, r * .07, 0, 6.28); ctx.fill(); }
+      ctx.fillStyle = "#5E9B4F"; ctx.beginPath(); ctx.ellipse(0, -r * .8, r * .7, r * .22, 0, 0, 6.28); ctx.fill();
+      ctx.restore();
+    }
+    function frame() {
+      if (has("fx-sparkle") && visible) {
+        if (W !== cv.clientWidth || H !== cv.clientHeight) size();
+        ctx.clearRect(0, 0, W, H);
+        parts.forEach((p, i) => {
+          p.y -= p.vy; p.sway += .012; p.tw += .05;
+          const x = p.x + Math.sin(p.sway) * 14;
+          if (p.berry) berry(x, p.y, p.r, .85, p.rot + Math.sin(p.sway) * .2);
+          else star(x, p.y, p.r, .35 + .55 * Math.abs(Math.sin(p.tw)));
+          if (p.y < -20) parts[i] = spawn(false);
+        });
+      }
+      requestAnimationFrame(frame);
+    }
+    if ("IntersectionObserver" in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(hero);
+    requestAnimationFrame(frame);
   })();
 </script>
 </body>
