@@ -105,18 +105,32 @@
       筆の跡: 幅 974/2000 = 48.7%、上端 25/867 = 2.88%
       タイトル（筆の跡の中）: 左 188/974 = 19.30%、上 130/574 = 22.65%、幅 606/974 = 62.22%
   */
-  .hero { position: relative; overflow: hidden; aspect-ratio: 2000 / 867; background: #2a1d3a; }
-  .hero .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /*
+    PC・タブレット：開いたときに画面いっぱい（ヘッダーの下から画面の下端まで）に出す。
+    背景は画面の形に合わせて左右を切り、筆の跡とタイトルは画面の中央に置く。
+    筆の跡の幅は、画面の幅の52%と、高さに収まる大きさ（高さの約62%）の小さい方。
+    縦長の画面で背景を切りすぎないよう、高さは幅の2/3までにする。
+  */
+  .hero {
+    position: relative; overflow: hidden; background: #2a1d3a;
+    height: calc(100svh - 64px); min-height: 420px; max-height: calc(100vw / 1.5);
+  }
+  .hero .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
   .hero .mark {
-    position: absolute; left: 50%; top: 2.88%; width: 48.7%;
-    transform: translateX(-50%);
+    position: absolute; left: 50%; top: 50%;
+    width: min(52vw, (100svh - 64px) * 1.05, 980px);
+    transform: translate(-50%, -54%);
   }
   .hero .brush { display: block; width: 100%; height: auto; }
   .hero .title { position: absolute; left: 19.30%; top: 22.65%; width: 62.22%; height: auto; }
+  /* タブレットの縦向きなど幅の狭い画面では、筆の跡を大きめに */
+  @media (min-width: 641px) and (max-width: 960px) {
+    .hero .mark { width: min(72vw, (100svh - 64px) * 1.05); }
+  }
   /* スマホは横長のままだと文字が小さすぎるので、高さを足して筆の跡を大きく出す */
   @media (max-width: 640px) {
-    .hero { aspect-ratio: 4 / 3; }
-    .hero .mark { width: 92%; top: 50%; transform: translate(-50%, -50%); }
+    .hero { height: auto; min-height: 0; max-height: none; aspect-ratio: 4 / 3; }
+    .hero .mark { width: 92%; transform: translate(-50%, -50%); }
   }
 
   /* 読み込み時の演出：背景がゆっくり寄り、筆の跡がはじけるように出て、タイトルが跳ねて乗る */
@@ -530,24 +544,23 @@
     requestAnimationFrame(tick);
   }
   // 触っている間・カーソルを乗せている間は止め、手で動かせるようにする
-  marquee.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") { paused = true; clearTimeout(resumeTimer); } });
-  marquee.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") pauseFor(600); });
+  // カーソルを乗せただけでは止めない。止めるのは、指で触れたとき・横にホイールしたとき・ドラッグ中・キーボードで選んだときだけ
   marquee.addEventListener("touchstart", () => pauseFor(4000), { passive: true });
-  marquee.addEventListener("wheel", () => pauseFor(2500), { passive: true });
-  marquee.addEventListener("focusin", () => { paused = true; clearTimeout(resumeTimer); });
-  marquee.addEventListener("focusout", () => pauseFor(1500));
+  marquee.addEventListener("wheel", e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) pauseFor(2500); }, { passive: true });
+  marquee.addEventListener("focusin", e => { if (e.target.matches(":focus-visible")) { paused = true; clearTimeout(resumeTimer); } });
+  marquee.addEventListener("focusout", () => { if (paused) pauseFor(1500); });
   marquee.addEventListener("scroll", () => { if (paused) pos = marquee.scrollLeft; }, { passive: true });
 
   // マウスでのドラッグ
   let dragging = false, startX = 0, startLeft = 0, moved = false;
-  marquee.addEventListener("mousedown", e => { dragging = true; moved = false; startX = e.clientX; startLeft = marquee.scrollLeft; e.preventDefault(); });
+  marquee.addEventListener("mousedown", e => { dragging = true; moved = false; paused = true; clearTimeout(resumeTimer); startX = e.clientX; startLeft = marquee.scrollLeft; e.preventDefault(); });
   window.addEventListener("mousemove", e => {
     if (!dragging) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 4) moved = true;
     marquee.scrollLeft = startLeft - dx;
   });
-  window.addEventListener("mouseup", () => { dragging = false; });
+  window.addEventListener("mouseup", () => { if (dragging) { dragging = false; pauseFor(1200); } });
   track.addEventListener("click", e => { if (moved) { e.preventDefault(); moved = false; } }, true);
 
   requestAnimationFrame(tick);
