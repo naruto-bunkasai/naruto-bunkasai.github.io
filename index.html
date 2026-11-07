@@ -182,6 +182,10 @@
     background: linear-gradient(90deg, var(--night-bg) 0%, rgba(21,23,63,.6) 45%, rgba(21,23,63,.2));
   }
   .kcard.allday { background: #F6E3E3; color: var(--navy); }
+  .kcard.allday .bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, #F6E3E3 0%, rgba(246,227,227,.6) 45%, rgba(246,227,227,.15));
+  }
   .tag {
     align-self: flex-start;
     font-size: 11.5px; padding: 2px 10px; border-radius: 2px;
@@ -429,15 +433,15 @@
     { id: "obakeyashiki", part: "night", title: "お化け屋敷", catch: "その扉の先に…",
       desc: "いつもと違う、夜の校舎へ。<br>少し怖くて、特別などきどき。<br>友達と一緒に、一歩踏み出して。", img: "assets/img/obakeyashiki-placeholder.jpg" },
     { id: "jetcoaster", part: "day", title: "ジェット<br>コースター", catch: "教室で味わう、<br>最高のスリル。",
-      desc: "教室に組んだ手作りのコースター。<br>文化祭ならではの乗り物を。" },
+      desc: "教室に組んだ手作りのコースター。<br>文化祭ならではの乗り物を。", img: "assets/img/kikaku-jetcoaster.jpg" },
     { id: "planetarium", part: "allday", title: "プラネタリウム<br>カフェ", catch: "星空に包まれた、<br>特別なカフェ時間。",
-      desc: "暗くした図書室に、<br>灯りでつくる星空。" },
+      desc: "暗くした図書室に、<br>灯りでつくる星空。", img: "assets/img/kikaku-planetarium.jpg" },
     { id: "tentoushiki", part: "night", title: "点灯式", catch: "灯りがともる瞬間を、<br>みんなで。",
-      desc: "カウントダウンとともに、<br>会場が夜の部へ切り替わります。" },
+      desc: "カウントダウンとともに、<br>会場が夜の部へ切り替わります。", img: "assets/img/kikaku-tentoushiki.jpg" },
     { id: "shop", part: "allday", title: "ハンドメイド・<br>模擬店", catch: "食べて、選んで、<br>持ち帰る。",
-      desc: "キッチンカーや手作りの品。<br>鳴門のお店が集まります。" },
+      desc: "キッチンカーや手作りの品。<br>鳴門のお店が集まります。", img: "assets/img/kikaku-shop.jpg" },
     { id: "stage", part: "allday", title: "ステージ", catch: "体育館に、<br>響く一日。",
-      desc: "ダンス・演劇・吹奏楽・バンド。<br>出演者は決まり次第お知らせします。" }
+      desc: "ダンス・演劇・吹奏楽・バンド。<br>出演者は決まり次第お知らせします。", img: "assets/img/kikaku-stage.jpg" }
   ];
   const PART_LABEL = { day: "昼の部", night: "夜の部", allday: "終日" };
 
