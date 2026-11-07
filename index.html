@@ -3,231 +3,509 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>鳴門文化祭 -Berry happy！- | 2026.12.5（土）</title>
-<meta name="description" content="青春の続きを鳴門の地でもう一度。2026年12月5日（土）10:00〜19:00、TODAベリーファーム（旧北灘西小学校）で開催。入場無料。">
+<title>鳴門文化祭 -Berry happy- | 2026.12.5（土）TODAベリーファーム</title>
+<meta name="description" content="2026年12月5日（土）10:00〜19:00、TODAベリーファーム（旧北灘西小学校）で開催。昼は縁日、夜はお化け屋敷。入場無料。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="鳴門文化祭 -Berry happy！-">
-<meta property="og:description" content="青春の続きを鳴門の地でもう一度。2026年12月5日（土）TODAベリーファームで開催。入場無料。">
+<meta property="og:title" content="鳴門文化祭 -Berry happy-">
+<meta property="og:description" content="2026年12月5日（土）TODAベリーファーム（旧北灘西小学校）で開催。入場無料。">
 <meta property="og:url" content="https://naruto-bunkasai.github.io/">
-<meta name="theme-color" content="#E23B4E">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 58C18 50 8 38 10 26c1-8 9-12 22-12s21 4 22 12c2 12-8 24-22 32z' fill='%23E23B4E'/%3E%3Cpath d='M20 16c4-6 8-6 12-2 4-4 8-4 12 2-6 3-18 3-24 0z' fill='%235E9B4F'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#14285A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 58C18 50 8 38 10 26c1-8 9-12 22-12s21 4 22 12c2 12-8 24-22 32z' fill='%23C8323C'/%3E%3Cpath d='M20 16c4-6 8-6 12-2 4-4 8-4 12 2-6 3-18 3-24 0z' fill='%235E9B4F'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
+  /*
+    晴菜さんのCanvaのデザイン案（2026-11-06に広報班OK）を組んだもの。
+    - 「おすすめの企画」は、企画カードがゆっくり横に流れ続ける一覧（下の KIKAKU を書き換えると増減する。のちにシートから読む）
+    - 「気になる体験を、もうひとつ」の節は、横スクロールの一覧に含めたので置いていない
+    - FAQはトグル（details 要素）
+    - 画像は仮（デザイン案のスクショから切り出した低解像度）。元データを受け取ったら assets/img を差し替える
+  */
   :root {
-    --red: #E23B4E;
-    --pink: #F27D97;
-    --pale: #FBD9E1;
-    --green: #5E9B4F;
-    --cream: #FFF4DF;
-    --ink: #3a2a2e;
-    --muted: #7a6468;
+    --navy: #14285A;
+    --navy-soft: #2B3B66;
+    --red: #C8323C;
+    --cream: #FDFBF4;
+    --beige: #F4EDDD;
+    --mist: #E8EAF2;
+    --line: #D6D3CB;
+    --muted: #5E6478;
+    --day: #F3D774;
+    --day-bg: #FCF1C9;
+    --night: #6B48B3;
+    --night-bg: #15173F;
+    --serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --latin: "Cormorant Garamond", "Times New Roman", serif;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
-    min-height: 100vh;
+    margin: 0;
     background: var(--cream);
-    color: var(--ink);
-    font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+    color: var(--navy);
+    font-family: var(--serif);
     font-weight: 500;
     line-height: 1.8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     overflow-x: hidden;
   }
-  /* 上下のガーランド（文化祭らしさ） */
-  .garland {
-    width: 100%;
-    height: 34px;
-    background:
-      conic-gradient(from 135deg at 50% 0, var(--red) 90deg, transparent 0) 0 0 / 48px 34px repeat-x;
-    -webkit-mask: linear-gradient(#000 0 0);
-    position: relative;
-  }
-  .garland::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: conic-gradient(from 135deg at 50% 0, var(--pink) 90deg, transparent 0) 24px 0 / 48px 34px repeat-x;
-    opacity: .9;
-    clip-path: inset(0 0 0 0);
-  }
-  main {
-    width: 100%;
-    max-width: 640px;
-    padding: 40px 20px 56px;
-    text-align: center;
-    flex: 1;
-  }
-  .badge {
-    display: inline-block;
-    padding: 4px 18px;
-    border-radius: 999px;
-    background: var(--red);
-    color: #fff;
-    font-weight: 700;
-    letter-spacing: .12em;
-    font-size: 15px;
-  }
-  h1 {
-    margin: 22px 0 6px;
-    font-weight: 900;
-    line-height: 1.25;
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .eyebrow {
+    display: block;
+    font-family: var(--latin);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: .28em;
     color: var(--red);
-    font-size: clamp(34px, 9vw, 56px);
-    letter-spacing: .02em;
+    text-transform: uppercase;
   }
-  h1 .sub {
-    display: block;
-    margin-top: 6px;
-    font-size: clamp(20px, 5.4vw, 30px);
-    color: var(--pink);
-    letter-spacing: .06em;
-  }
-  .catch {
-    margin: 14px 0 0;
-    font-weight: 700;
-    font-size: clamp(16px, 4.4vw, 20px);
-  }
-  .berry {
-    width: 120px;
-    height: 120px;
-    margin: 30px auto 6px;
-    display: block;
-    animation: bob 3.2s ease-in-out infinite;
-  }
-  @keyframes bob { 50% { transform: translateY(-8px) rotate(-4deg); } }
-  @media (prefers-reduced-motion: reduce) { .berry { animation: none; } }
-  .soon {
-    margin: 4px 0 26px;
-    font-size: clamp(30px, 8.6vw, 46px);
-    font-weight: 900;
+  .heading {
+    margin: 6px 0 0;
+    font-weight: 600;
+    font-size: clamp(24px, 4.4vw, 34px);
     letter-spacing: .14em;
-    color: var(--green);
+    line-height: 1.5;
   }
-  .soon-note {
-    margin: -18px 0 32px;
-    color: var(--muted);
-    font-size: 15px;
+  .center { text-align: center; }
+  .note { font-size: 12px; color: var(--muted); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
   }
-  .card {
-    background: #fff;
-    border: 3px solid var(--pale);
-    border-radius: 22px;
-    padding: 22px 22px 18px;
-    text-align: left;
+
+  /* ヘッダー */
+  .site-header { background: var(--cream); }
+  .site-header .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
   }
-  dl { margin: 0; }
-  .row {
-    display: grid;
-    grid-template-columns: 4.5em 1fr;
-    gap: 4px 14px;
-    padding: 10px 0;
-    border-bottom: 1px dashed var(--pale);
-  }
-  .row:last-child { border-bottom: 0; }
-  dt { font-weight: 700; color: var(--red); }
-  dd { margin: 0; }
-  dd small { color: var(--muted); font-size: 13.5px; }
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin: 22px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-  .tags li {
-    background: var(--pale);
-    color: var(--red);
-    border-radius: 999px;
-    padding: 2px 14px;
-    font-weight: 700;
-    font-size: 14px;
-  }
-  .ig {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 32px;
-    padding: 14px 26px;
-    border-radius: 999px;
-    background: var(--red);
-    color: #fff;
+  .logo {
+    font-weight: 600; font-size: 22px; letter-spacing: .3em;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 16px;
-    box-shadow: 0 4px 0 #b52a3b;
-    transition: transform .1s, box-shadow .1s;
   }
-  .ig:active { transform: translateY(3px); box-shadow: 0 1px 0 #b52a3b; }
-  .ig svg { width: 22px; height: 22px; }
-  .ig-note { margin: 12px 0 0; color: var(--muted); font-size: 14px; }
-  footer {
-    width: 100%;
-    padding: 18px 20px 26px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
+  .gnav { display: flex; align-items: center; gap: 22px; font-size: 13px; }
+  .gnav a { text-decoration: none; }
+  .gnav .pill {
+    background: var(--navy); color: #fff;
+    padding: 6px 18px; border-radius: 999px; font-weight: 600;
   }
+  @media (max-width: 640px) {
+    .gnav .text-link { display: none; }
+    .logo { font-size: 19px; letter-spacing: .22em; }
+  }
+
+  /* キービジュアル */
+  .hero img { width: 100%; height: auto; aspect-ratio: 752 / 282; object-fit: cover; }
+
+  /* 開催情報の帯 */
+  .info-bar .wrap {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 16px; padding-top: 22px; padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .info-bar p { margin: 0; }
+  .date { display: flex; align-items: baseline; gap: 10px; white-space: nowrap; }
+  .date .y { font-family: var(--latin); font-size: 15px; }
+  .date .md { font-family: var(--latin); font-weight: 600; font-size: 34px; line-height: 1; }
+  .date .dow { font-size: 14px; }
+  .date .time { font-family: var(--latin); font-size: 15px; margin-left: 8px; }
+  .venue { text-align: center; font-weight: 600; font-size: 15px; line-height: 1.6; }
+  .fee { text-align: right; }
+  .fee strong { display: block; color: var(--red); font-weight: 600; font-size: 16px; }
+  .fee small { font-size: 11px; color: var(--muted); }
+  @media (max-width: 720px) {
+    .info-bar .wrap { grid-template-columns: 1fr; text-align: center; gap: 8px; }
+    .date { justify-content: center; flex-wrap: wrap; }
+    .fee { text-align: center; }
+  }
+
+  /* 5つの楽しみ方 */
+  .cats ul {
+    list-style: none; margin: 0; padding: 28px 0 8px;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+  }
+  .cats li { border-left: 1px solid var(--line); }
+  .cats li:first-child { border-left: 0; }
+  .cats a {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    text-decoration: none; padding: 4px 4px 10px;
+  }
+  .cats svg { width: 30px; height: 30px; margin-bottom: 6px; }
+  .cats b { font-weight: 600; font-size: 17px; letter-spacing: .08em; }
+  .cats small { font-size: 10.5px; color: var(--muted); }
+  @media (max-width: 560px) {
+    .cats svg { width: 24px; height: 24px; }
+    .cats b { font-size: 13px; letter-spacing: 0; }
+    .cats small { font-size: 9px; }
+  }
+
+  /* おすすめの企画（横に流れるカード） */
+  .pickup { padding: 56px 0 40px; }
+  .pickup .heading { letter-spacing: .3em; }
+  .marquee {
+    margin-top: 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+  .marquee::-webkit-scrollbar { display: none; }
+  .marquee:active { cursor: grabbing; }
+  .track { display: flex; gap: 20px; padding: 4px 20px 12px; width: max-content; }
+  .kcard {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(78vw, 400px);
+    min-height: 420px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    padding: 22px 22px 20px;
+    text-decoration: none;
+    isolation: isolate;
+  }
+  .kcard .bg {
+    position: absolute; inset: 0 0 0 30%; z-index: -1;
+    background-size: cover; background-position: center;
+  }
+  .kcard.day { background: var(--day-bg); color: var(--navy); }
+  .kcard.day .bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--day-bg) 0%, rgba(252,241,201,.6) 45%, rgba(252,241,201,.15));
+  }
+  .kcard.night { background: var(--night-bg); color: #fff; }
+  .kcard.night .bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--night-bg) 0%, rgba(21,23,63,.6) 45%, rgba(21,23,63,.2));
+  }
+  .kcard.allday { background: #F6E3E3; color: var(--navy); }
+  .tag {
+    align-self: flex-start;
+    font-size: 11.5px; padding: 2px 10px; border-radius: 2px;
+  }
+  .day .tag { background: var(--day); }
+  .night .tag { background: var(--night); color: #fff; }
+  .allday .tag { background: #E8A3A8; }
+  .kcard h3 { margin: 12px 0 0; font-weight: 600; font-size: 34px; letter-spacing: .06em; line-height: 1.3; }
+  .kcard .catch { margin: 14px 0 0; font-weight: 600; font-size: 18px; line-height: 1.5; }
+  .kcard .desc { margin: 14px 0 18px; font-size: 12.5px; line-height: 1.9; }
+  .kcard .meta {
+    margin: auto 0 0; padding: 10px 6px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-radius: 6px; font-size: 11px; text-align: center; line-height: 1.6;
+  }
+  .day .meta, .allday .meta { background: rgba(255,255,255,.82); }
+  .night .meta { background: rgba(255,255,255,.12); }
+  .meta dt { font-weight: 600; }
+  .meta dd { margin: 0; }
+  .kcard .more {
+    margin-top: 12px; display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 18px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+  }
+  .kcard .more span:first-child { flex: 1; text-align: center; }
+  .day .more { background: var(--day); }
+  .night .more { background: var(--night); }
+  .allday .more { background: #E8A3A8; }
+  .kcard:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+  .pickup .note { margin: 14px 20px 0; }
+
+  /* 一日の流れ */
+  .flow { background: var(--beige); padding: 52px 0 40px; }
+  .flow ol {
+    list-style: none; margin: 32px auto 0; padding: 0; max-width: 960px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+  }
+  .flow li { padding: 4px 28px; border-left: 1px solid #C9C0AD; }
+  .flow li:first-child { border-left: 0; }
+  .flow .t { font-family: var(--latin); font-weight: 600; font-size: 28px; color: var(--red); line-height: 1.2; }
+  .flow .t.ja { font-family: var(--serif); font-weight: 500; }
+  .flow h3 { margin: 10px 0 6px; font-weight: 600; font-size: 16px; letter-spacing: .06em; }
+  .flow p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .flow .note { max-width: 960px; margin: 22px auto 0; padding: 0 28px; }
+  @media (max-width: 720px) {
+    .flow ol { grid-template-columns: 1fr; gap: 22px; }
+    .flow li { border-left: 0; border-top: 1px solid #C9C0AD; padding: 18px 4px 0; }
+    .flow li:first-child { border-top: 0; padding-top: 0; }
+    .flow .note { padding: 0 4px; }
+  }
+
+  /* 会場とアクセス */
+  .access { padding: 60px 0; }
+  .access .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 28px; }
+  .access .place-label { font-size: 11px; color: var(--red); }
+  .access .place { margin: 6px 0 14px; font-weight: 600; font-size: 26px; letter-spacing: .04em; }
+  .access address { font-style: normal; font-size: 14px; line-height: 1.9; }
+  .access table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .access th, .access td { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; text-align: left; vertical-align: top; }
+  .access th { width: 7.5em; font-weight: 500; }
+  .access td small { display: block; font-size: 12px; color: var(--muted); }
+  @media (max-width: 720px) { .access .cols { grid-template-columns: 1fr; gap: 28px; } }
+
+  /* 最新情報 */
+  .news { background: var(--mist); padding: 26px 0; }
+  .news .wrap { display: grid; grid-template-columns: 1fr 1fr auto; align-items: center; gap: 20px; }
+  .news h2 { margin: 2px 0 0; font-weight: 600; font-size: 22px; letter-spacing: .04em; }
+  .news p { margin: 0; font-size: 13px; color: var(--navy-soft); }
+  .news .btn {
+    display: flex; justify-content: space-between; align-items: center; gap: 40px;
+    background: var(--navy); color: #fff; text-decoration: none;
+    padding: 12px 24px; border-radius: 999px; font-size: 14px; min-width: 260px;
+  }
+  @media (max-width: 720px) {
+    .news .wrap { grid-template-columns: 1fr; }
+    .news .btn { min-width: 0; }
+  }
+
+  /* FAQ（トグル） */
+  .faq { padding: 60px 0 72px; }
+  .faq .heading { letter-spacing: .2em; font-size: clamp(20px, 3.6vw, 28px); }
+  @media (max-width: 480px) { .faq .heading { letter-spacing: .06em; } }
+  .faq .list { margin-top: 28px; border-top: 1px solid var(--line); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 22px 8px; font-size: 14px; letter-spacing: .08em;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: var(--latin); font-size: 22px; color: #9aa0b2; transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq .a { padding: 0 8px 22px; font-size: 13.5px; color: var(--navy-soft); }
+  .faq .a p { margin: 0; }
+
+  /* フッター */
+  .site-footer { background: var(--navy); color: #fff; text-align: center; padding: 40px 20px 34px; }
+  .site-footer .name { font-weight: 600; font-size: 28px; letter-spacing: .3em; }
+  .site-footer .sub { font-family: var(--latin); font-style: italic; font-size: 22px; margin-top: 2px; }
+  .site-footer .en { font-family: var(--latin); font-weight: 600; font-size: 10.5px; letter-spacing: .3em; margin-top: 8px; text-transform: uppercase; }
 </style>
 </head>
 <body>
-  <div class="garland" aria-hidden="true"></div>
 
-  <main>
-    <span class="badge">2026.12.5 SAT</span>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="./">鳴門文化祭</a>
+    <nav class="gnav" aria-label="ページ内の移動">
+      <a class="text-link" href="#pickup">企画紹介</a>
+      <a class="text-link" href="#access">会場・アクセス</a>
+      <a class="pill" href="#news">最新情報↗</a>
+    </nav>
+  </div>
+</header>
 
-    <h1>鳴門文化祭<span class="sub">-Berry happy！-</span></h1>
-    <p class="catch">青春の続きを鳴門の地でもう一度</p>
+<main>
+  <section class="hero">
+    <h1 class="sr-only">鳴門文化祭 -Berry happy-（NARUTO CULTURE FESTIVAL 2026）</h1>
+    <!-- 仮の画像。晴菜さんから元データ（写真・筆の跡・タイトル）を受け取ったら差し替える -->
+    <img src="assets/img/hero-placeholder.jpg" alt="昼の縁日と夜の旧校舎を背景にした、鳴門文化祭 -Berry happy- のタイトル" width="752" height="282">
+  </section>
 
-    <svg class="berry" viewBox="0 0 120 120" aria-hidden="true">
-      <path d="M60 112C30 96 10 72 14 48c2-15 18-24 46-24s44 9 46 24c4 24-16 48-46 64z" fill="#E23B4E"/>
-      <g fill="#FFF4DF">
-        <ellipse cx="40" cy="50" rx="2.6" ry="3.6"/><ellipse cx="60" cy="46" rx="2.6" ry="3.6"/><ellipse cx="80" cy="50" rx="2.6" ry="3.6"/>
-        <ellipse cx="32" cy="66" rx="2.6" ry="3.6"/><ellipse cx="50" cy="64" rx="2.6" ry="3.6"/><ellipse cx="70" cy="64" rx="2.6" ry="3.6"/><ellipse cx="88" cy="66" rx="2.6" ry="3.6"/>
-        <ellipse cx="42" cy="82" rx="2.6" ry="3.6"/><ellipse cx="60" cy="82" rx="2.6" ry="3.6"/><ellipse cx="78" cy="82" rx="2.6" ry="3.6"/>
-        <ellipse cx="52" cy="98" rx="2.6" ry="3.6"/><ellipse cx="68" cy="98" rx="2.6" ry="3.6"/>
-      </g>
-      <path d="M34 28c8-12 18-12 26-4 8-8 18-8 26 4-14 8-38 8-52 0z" fill="#5E9B4F"/>
-      <path d="M60 24c0-8 3-14 8-18" stroke="#5E9B4F" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <g fill="#E6BE55">
-        <path d="M100 18l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/>
-        <path d="M16 20l2 4.5 4.5 2-4.5 2-2 4.5-2-4.5-4.5-2 4.5-2z"/>
-      </g>
-    </svg>
-
-    <p class="soon">COMING SOON</p>
-    <p class="soon-note">企画やステージの情報は、このページで順次お知らせします。</p>
-
-    <div class="card">
-      <dl>
-        <div class="row"><dt>日時</dt><dd>2026年12月5日（土）<span style="white-space:nowrap">10:00〜19:00</span></dd></div>
-        <div class="row"><dt>会場</dt><dd>TODAベリーファーム（旧北灘西小学校）<br><small>徳島県鳴門市北灘町折野字屋敷64-3</small></dd></div>
-        <div class="row"><dt>入場</dt><dd>無料</dd></div>
-        <div class="row"><dt>駐車場</dt><dd>あり（約200台）</dd></div>
-        <div class="row"><dt>雨の日</dt><dd>室内で開催します</dd></div>
-      </dl>
+  <section class="info-bar" aria-label="開催の概要">
+    <div class="wrap">
+      <p class="date"><span class="y">2026</span><span class="md">12.5</span><span class="dow">土</span><span class="time">10:00–19:00</span></p>
+      <p class="venue">TODAベリーファーム<br>旧北灘西小学校</p>
+      <p class="fee"><strong>入場無料</strong><small>飲食・一部企画は有料</small></p>
     </div>
+  </section>
 
-    <ul class="tags" aria-label="キーワード">
-      <li>昼はいちごの文化祭</li>
-      <li>夜は恐怖と光</li>
-      <li>学生が0からつくる</li>
-    </ul>
+  <nav class="cats" aria-label="楽しみ方">
+    <div class="wrap">
+      <ul>
+        <li><a href="#pickup">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#C8323C" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 4v9a3 3 0 0 0 6 0V4M12 4v24M21 28V4c3 2 4 6 4 10h-4"/></svg>
+          <b>食べる</b><small>飲食・カフェ</small></a></li>
+        <li><a href="#pickup">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#C9A227" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7.5"/><circle cx="16" cy="16" r="3"/></svg>
+          <b>遊ぶ</b><small>縁日・体験</small></a></li>
+        <li><a href="#pickup">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#14285A" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M13 23V6l10 3"/><circle cx="9.5" cy="23" r="3.5"/></svg>
+          <b>観る</b><small>ステージ</small></a></li>
+        <li><a href="#pickup">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#3E8E86" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="20" height="21" rx="2"/><path d="M6 11h20M12 15a4 4 0 0 0 8 0"/></svg>
+          <b>買う</b><small>出店・販売</small></a></li>
+        <li><a href="#pickup">
+          <svg viewBox="0 0 32 32" fill="none" stroke="#14285A" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 26A11 11 0 1 1 15 5a9 9 0 0 0 11 13 11 11 0 0 1-6 8z"/><path d="M24 5v4M22 7h4"/></svg>
+          <b>夜の企画</b><small>恐怖と光</small></a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <a class="ig" href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-      Instagramで最新情報を見る
-    </a>
-    <p class="ig-note">@naruto_bunkasai</p>
-  </main>
+  <section class="pickup" id="pickup" aria-labelledby="pickup-h">
+    <div class="wrap center">
+      <span class="eyebrow">Pick up</span>
+      <h2 class="heading" id="pickup-h">おすすめの企画</h2>
+    </div>
+    <div class="marquee" id="marquee" tabindex="0" aria-label="企画の一覧（横にスクロールできます）">
+      <div class="track" id="track"></div>
+    </div>
+    <p class="note center">ビジュアルは生成したイメージです。当日の会場・装飾・提供内容を示すものではありません。</p>
+  </section>
 
-  <footer>鳴門文化祭 実行委員会</footer>
-  <div class="garland" aria-hidden="true" style="transform:scaleY(-1)"></div>
+  <section class="flow" aria-labelledby="flow-h">
+    <div class="wrap">
+      <div class="center">
+        <span class="eyebrow">Day to night</span>
+        <h2 class="heading" id="flow-h">一日まるごと、楽しもう。</h2>
+      </div>
+      <ol>
+        <li><div class="t">10:00</div><h3>文化祭スタート</h3><p>遊ぶ、食べる、観る、<br>気になる企画から楽しもう。</p></li>
+        <li><div class="t ja">夕方</div><h3>点灯式・夜の部へ</h3><p>灯りとともに、<br>会場の表情が変わります。</p></li>
+        <li><div class="t">19:00</div><h3>文化祭終了</h3><p>今日の思い出を、<br>それぞれの日常へ。</p></li>
+      </ol>
+      <p class="note">点灯式の時刻・各企画の時間割は調整中です。</p>
+    </div>
+  </section>
+
+  <section class="access" id="access" aria-labelledby="access-h">
+    <div class="wrap">
+      <span class="eyebrow">Information &amp; Access</span>
+      <h2 class="heading" id="access-h">文化祭の舞台は、旧校舎。</h2>
+      <div class="cols">
+        <div>
+          <div class="place-label">会場</div>
+          <p class="place">TODAベリーファーム</p>
+          <address>旧北灘西小学校<br>鳴門市北灘町折野字屋敷64-3</address>
+          <p class="note">地図・交通のアクセス・館内案内は順次掲載します。</p>
+        </div>
+        <table>
+          <tr><th scope="row">開催日時</th><td>2026年12月5日（土）<br>10:00〜19:00</td></tr>
+          <tr><th scope="row">入場料</th><td>無料<small>飲食・一部企画は有料</small></td></tr>
+          <tr><th scope="row">駐車場</th><td>約200台</td></tr>
+          <tr><th scope="row">雨天</th><td>開催</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="news" id="news" aria-labelledby="news-h">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">News</span>
+        <h2 id="news-h">文化祭の最新情報</h2>
+      </div>
+      <p>企画の詳細・出展者・時間割などを、<br>決まり次第お知らせします。</p>
+      <a class="btn" href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">Instagramでチェック <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="heading" id="faq-h">来る前に、知っておきたいこと。</h2>
+      <div class="list">
+        <details>
+          <summary>入場料はかかりますか？</summary>
+          <div class="a"><p>入場は無料です。飲食と一部の企画は有料です。</p></div>
+        </details>
+        <details>
+          <summary>子どもも参加できますか？</summary>
+          <!-- 答えは広報班と決める（仮の文） -->
+          <div class="a"><p>（回答を準備中です）</p></div>
+        </details>
+        <details>
+          <summary>雨の日でも開催しますか？</summary>
+          <div class="a"><p>雨天でも開催します。</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="name">鳴門文化祭</div>
+  <div class="sub">- Berry happy -</div>
+  <div class="en">Naruto Culture Festival 2026</div>
+</footer>
+
+<script>
+  // 企画の一覧。のちにGoogleスプレッドシートから読む形に置き換える（中身はシートで直す、の方針）
+  // part: day（昼の部）/ night（夜の部）/ allday（終日）。img が無いカードは色だけで出す
+  const KIKAKU = [
+    { id: "ennichi", part: "day", title: "縁日", catch: "遊んで、笑って、<br>お祭り気分。",
+      desc: "輪投げや射的など、<br>夢中になる遊びをみんなで。<br>友達同士でも、家族でも。", img: "assets/img/ennichi-placeholder.jpg" },
+    { id: "obakeyashiki", part: "night", title: "お化け屋敷", catch: "その扉の先に…",
+      desc: "いつもと違う、夜の校舎へ。<br>少し怖くて、特別などきどき。<br>友達と一緒に、一歩踏み出して。", img: "assets/img/obakeyashiki-placeholder.jpg" },
+    { id: "jetcoaster", part: "day", title: "ジェット<br>コースター", catch: "教室で味わう、<br>最高のスリル。",
+      desc: "教室に組んだ手作りのコースター。<br>文化祭ならではの乗り物を。" },
+    { id: "planetarium", part: "allday", title: "プラネタリウム<br>カフェ", catch: "星空に包まれた、<br>特別なカフェ時間。",
+      desc: "暗くした図書室に、<br>灯りでつくる星空。" },
+    { id: "tentoushiki", part: "night", title: "点灯式", catch: "灯りがともる瞬間を、<br>みんなで。",
+      desc: "カウントダウンとともに、<br>会場が夜の部へ切り替わります。" },
+    { id: "shop", part: "allday", title: "ハンドメイド・<br>模擬店", catch: "食べて、選んで、<br>持ち帰る。",
+      desc: "キッチンカーや手作りの品。<br>鳴門のお店が集まります。" },
+    { id: "stage", part: "allday", title: "ステージ", catch: "体育館に、<br>響く一日。",
+      desc: "ダンス・演劇・吹奏楽・バンド。<br>出演者は決まり次第お知らせします。" }
+  ];
+  const PART_LABEL = { day: "昼の部", night: "夜の部", allday: "終日" };
+
+  function cardHTML(k, clone) {
+    const bg = k.img ? `<div class="bg" style="background-image:url('${k.img}')"></div>` : "";
+    // サブページは未作成。作ったら href を kikaku/${k.id}.html などに変える
+    return `<a class="kcard ${k.part}" href="#pickup" data-id="${k.id}"${clone ? ' aria-hidden="true" tabindex="-1"' : ""}>
+      ${bg}
+      <span class="tag">${PART_LABEL[k.part]}</span>
+      <h3>${k.title}</h3>
+      <p class="catch">${k.catch}</p>
+      <p class="desc">${k.desc}</p>
+      <dl class="meta">
+        <div><dt>開催時間</dt><dd>順次公開</dd></div>
+        <div><dt>開催場所</dt><dd>順次公開</dd></div>
+        <div><dt>参加費</dt><dd>順次公開</dd></div>
+      </dl>
+      <span class="more"><span>詳しく見る</span><span aria-hidden="true">＋</span></span>
+    </a>`;
+  }
+
+  const marquee = document.getElementById("marquee");
+  const track = document.getElementById("track");
+  // 同じ並びを2回つなげ、半分まで流れたら先頭へ戻すことで、切れ目なく流し続ける
+  track.innerHTML = KIKAKU.map(k => cardHTML(k, false)).join("") + KIKAKU.map(k => cardHTML(k, true)).join("");
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const SPEED = 0.35;            // 1フレームあたりのpx（ゆっくり）
+  let paused = false, resumeTimer = null, pos = 0;
+
+  function half() { return track.scrollWidth / 2; }
+  function pauseFor(ms) {
+    paused = true;
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => { pos = marquee.scrollLeft; paused = false; }, ms);
+  }
+  function tick() {
+    if (!paused && !reduce) {
+      pos += SPEED;
+      if (pos >= half()) pos -= half();
+      marquee.scrollLeft = pos;
+    } else if (marquee.scrollLeft >= half()) {
+      marquee.scrollLeft -= half();
+    }
+    requestAnimationFrame(tick);
+  }
+  // 触っている間・カーソルを乗せている間は止め、手で動かせるようにする
+  marquee.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") { paused = true; clearTimeout(resumeTimer); } });
+  marquee.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") pauseFor(600); });
+  marquee.addEventListener("touchstart", () => pauseFor(4000), { passive: true });
+  marquee.addEventListener("wheel", () => pauseFor(2500), { passive: true });
+  marquee.addEventListener("focusin", () => { paused = true; clearTimeout(resumeTimer); });
+  marquee.addEventListener("focusout", () => pauseFor(1500));
+  marquee.addEventListener("scroll", () => { if (paused) pos = marquee.scrollLeft; }, { passive: true });
+
+  // マウスでのドラッグ
+  let dragging = false, startX = 0, startLeft = 0, moved = false;
+  marquee.addEventListener("mousedown", e => { dragging = true; moved = false; startX = e.clientX; startLeft = marquee.scrollLeft; e.preventDefault(); });
+  window.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 4) moved = true;
+    marquee.scrollLeft = startLeft - dx;
+  });
+  window.addEventListener("mouseup", () => { dragging = false; });
+  track.addEventListener("click", e => { if (moved) { e.preventDefault(); moved = false; } }, true);
+
+  requestAnimationFrame(tick);
+</script>
 </body>
 </html>
