@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add("js");</script>
 <title>鳴門文化祭 -Berry happy- | 2026.12.5（土）TODAベリーファーム</title>
 <meta name="description" content="2026年12月5日（土）10:00〜19:00、TODAベリーファーム（旧北灘西小学校）で開催。昼は縁日、夜はお化け屋敷。入場無料。">
 <meta property="og:type" content="website">
@@ -20,7 +21,7 @@
     - 「おすすめの企画」は、企画カードがゆっくり横に流れ続ける一覧（下の KIKAKU を書き換えると増減する。のちにシートから読む）
     - 「気になる体験を、もうひとつ」の節は、横スクロールの一覧に含めたので置いていない
     - FAQはトグル（details 要素）
-    - キービジュアルは高解像度版（2026-11-07差し替え）。縁日・お化け屋敷のカード画像はまだ仮（デザイン案のスクショから切り出した低解像度）
+    - キービジュアルは背景・筆の跡・タイトルの3枚を重ね、読み込み時に動かす（2026-11-07）。縁日・お化け屋敷のカード画像はまだ仮（デザイン案のスクショから切り出した低解像度）
   */
   :root {
     --navy: #14285A;
@@ -98,7 +99,44 @@
   }
 
   /* キービジュアル */
-  .hero img { width: 100%; height: auto; aspect-ratio: 1999 / 868; object-fit: cover; }
+  /*
+    背景・筆の跡・タイトルの3枚を重ねる。位置は元の1枚絵（2000×867）から割り出した値で、
+    筆の跡とタイトルの位置関係は元のまま、まとめて左右の中央へ寄せた（元は58pxほど左にずれていた）。
+      筆の跡: 幅 974/2000 = 48.7%、上端 25/867 = 2.88%
+      タイトル（筆の跡の中）: 左 188/974 = 19.30%、上 130/574 = 22.65%、幅 606/974 = 62.22%
+  */
+  .hero { position: relative; overflow: hidden; aspect-ratio: 2000 / 867; background: #2a1d3a; }
+  .hero .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero .mark {
+    position: absolute; left: 50%; top: 2.88%; width: 48.7%;
+    transform: translateX(-50%);
+  }
+  .hero .brush { display: block; width: 100%; height: auto; }
+  .hero .title { position: absolute; left: 19.30%; top: 22.65%; width: 62.22%; height: auto; }
+  /* スマホは横長のままだと文字が小さすぎるので、高さを足して筆の跡を大きく出す */
+  @media (max-width: 640px) {
+    .hero { aspect-ratio: 4 / 3; }
+    .hero .mark { width: 92%; top: 50%; transform: translate(-50%, -50%); }
+  }
+
+  /* 読み込み時の演出：背景がゆっくり寄り、筆の跡がはじけるように出て、タイトルが跳ねて乗る */
+  .js .hero .bg, .js .hero .brush, .js .hero .title { opacity: 0; }
+  .hero.ready .bg { animation: hero-bg 1.8s cubic-bezier(.2,.7,.2,1) both; }
+  .hero.ready .brush { animation: hero-pop .8s cubic-bezier(.3,1.6,.5,1) .35s both; transform-origin: 50% 55%; }
+  .hero.ready .title { animation: hero-title .7s cubic-bezier(.3,1.7,.5,1) .85s both; transform-origin: 50% 60%; }
+  @keyframes hero-bg { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: scale(1); } }
+  @keyframes hero-pop {
+    0% { opacity: 0; transform: scale(.25) rotate(-8deg); }
+    60% { opacity: 1; }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  @keyframes hero-title {
+    0% { opacity: 0; transform: translateY(14%) scale(.7); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js .hero .bg, .js .hero .brush, .js .hero .title { opacity: 1; animation: none !important; }
+  }
 
   /* 開催情報の帯 */
   .info-bar .wrap {
@@ -303,7 +341,11 @@
 <main>
   <section class="hero">
     <h1 class="sr-only">鳴門文化祭 -Berry happy-（NARUTO CULTURE FESTIVAL 2026）</h1>
-    <img src="assets/img/hero.jpg" srcset="assets/img/hero-1000.jpg 999w, assets/img/hero.jpg 1999w" sizes="100vw" alt="昼の縁日と夜の旧校舎を背景にした、鳴門文化祭 -Berry happy- のタイトル" width="1999" height="868">
+    <img class="bg" src="assets/img/hero-bg.webp" srcset="assets/img/hero-bg-1000.webp 1000w, assets/img/hero-bg.webp 2000w" sizes="100vw" alt="昼の縁日と夜の旧校舎" width="2000" height="867" fetchpriority="high">
+    <div class="mark">
+      <img class="brush" src="assets/img/hero-brush.webp" srcset="assets/img/hero-brush-730.webp 730w, assets/img/hero-brush.webp 1453w" sizes="(max-width: 640px) 92vw, 49vw" alt="" width="1453" height="856">
+      <img class="title" src="assets/img/hero-title.webp" alt="" width="904" height="506">
+    </div>
   </section>
 
   <section class="info-bar" aria-label="開催の概要">
@@ -509,6 +551,15 @@
   track.addEventListener("click", e => { if (moved) { e.preventDefault(); moved = false; } }, true);
 
   requestAnimationFrame(tick);
+
+  // キービジュアルの3枚が読み込めてから演出を始める（読み込みが遅くても2.5秒で始める）
+  (function () {
+    const hero = document.querySelector(".hero");
+    const imgs = [...hero.querySelectorAll("img")];
+    const go = () => hero.classList.add("ready");
+    Promise.all(imgs.map(i => i.decode ? i.decode().catch(() => {}) : Promise.resolve())).then(go);
+    setTimeout(go, 2500);
+  })();
 </script>
 </body>
 </html>
