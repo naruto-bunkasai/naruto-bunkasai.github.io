@@ -20,7 +20,7 @@
     - 「おすすめの企画」は、企画カードがゆっくり横に流れ続ける一覧（下の KIKAKU を書き換えると増減する。のちにシートから読む）
     - 「気になる体験を、もうひとつ」の節は、横スクロールの一覧に含めたので置いていない
     - FAQはトグル（details 要素）
-    - 画像は仮（デザイン案のスクショから切り出した低解像度）。元データを受け取ったら assets/img を差し替える
+    - キービジュアルは高解像度版（2026-11-07差し替え）。縁日・お化け屋敷のカード画像はまだ仮（デザイン案のスクショから切り出した低解像度）
   */
   :root {
     --navy: #14285A;
@@ -98,7 +98,7 @@
   }
 
   /* キービジュアル */
-  .hero img { width: 100%; height: auto; aspect-ratio: 752 / 282; object-fit: cover; }
+  .hero img { width: 100%; height: auto; aspect-ratio: 1999 / 868; object-fit: cover; }
 
   /* 開催情報の帯 */
   .info-bar .wrap {
@@ -303,8 +303,7 @@
 <main>
   <section class="hero">
     <h1 class="sr-only">鳴門文化祭 -Berry happy-（NARUTO CULTURE FESTIVAL 2026）</h1>
-    <!-- 仮の画像。晴菜さんから元データ（写真・筆の跡・タイトル）を受け取ったら差し替える -->
-    <img src="assets/img/hero-placeholder.jpg" alt="昼の縁日と夜の旧校舎を背景にした、鳴門文化祭 -Berry happy- のタイトル" width="752" height="282">
+    <img src="assets/img/hero.jpg" srcset="assets/img/hero-1000.jpg 999w, assets/img/hero.jpg 1999w" sizes="100vw" alt="昼の縁日と夜の旧校舎を背景にした、鳴門文化祭 -Berry happy- のタイトル" width="1999" height="868">
   </section>
 
   <section class="info-bar" aria-label="開催の概要">
