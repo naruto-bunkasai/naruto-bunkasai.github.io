@@ -198,7 +198,7 @@
   .pickup { padding: 56px 0 40px; }
   .pickup .heading { letter-spacing: .3em; }
   .marquee {
-    margin-top: 32px;
+    margin-top: 20px;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -206,7 +206,7 @@
   }
   .marquee::-webkit-scrollbar { display: none; }
   .marquee:active { cursor: grabbing; }
-  .track { display: flex; gap: 20px; padding: 4px 20px 12px; width: max-content; }
+  .track { display: flex; gap: 20px; padding: 16px 20px 36px; width: max-content; }
   .kcard {
     position: relative;
     flex: 0 0 auto;
@@ -266,7 +266,7 @@
   .night .more { background: var(--night); }
   .allday .more { background: #E8A3A8; }
   .kcard:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
-  .pickup .note { margin: 14px 20px 0; }
+  .pickup .note { margin: -10px 20px 0; }
 
   /* 一日の流れ */
   .flow { background: var(--beige); padding: 52px 0 40px; }
@@ -374,41 +374,31 @@
     .scroll-cue .line::after { animation: none; top: 30%; }
   }
 
-  /* ===== 見比べ用の演出（1・4・5・6）。html に fx-… のクラスが付いたときだけ効く ===== */
+  /* ===== 本番に入れる演出（4・5・6） ===== */
 
-  /* 1. 昼から夜へ：「一日まるごと」の節の色が、スクロールに合わせて昼→夕方→夜へ移る（色はJSが --sky に入れる） */
-  .fx-daynight .flow { background: var(--sky, var(--beige)); color: var(--sky-ink, var(--navy)); }
-  .fx-daynight .flow p, .fx-daynight .flow .note { color: inherit; opacity: .85; }
-  .fx-daynight .flow .t, .fx-daynight .flow .eyebrow { color: var(--sky-accent, var(--red)); }
-  .fx-daynight .flow li { transition: opacity .5s ease, transform .5s ease; }
-  .fx-daynight .flow li:not(.now) { opacity: .4; }
-  .fx-daynight .flow li.now { transform: translateY(-4px); }
+  /* 4. バナーの奥行き：スクロールすると背景はゆっくり下へ、筆の跡とタイトルは少し上へ（量はJSが入れる） */
+  .hero .bg { translate: 0 var(--bgy, 0px); }
+  .hero .mark { translate: 0 var(--mky, 0px); }
 
-  /* 4. バナーの奥行き：背景はゆっくり、筆の跡とタイトルは逆向きに少し動く（量はJSが入れる） */
-  .fx-parallax .hero .bg { translate: 0 var(--bgy, 0px); }
-  .fx-parallax .hero .mark { translate: 0 var(--mky, 0px); }
-
-  /* 5. カードを指すと少し浮き、写真がゆっくり寄る（流れは止めない） */
+  /* 5. カードを指すと少し浮き、写真がゆっくり寄る（流れは止めない）。
+     浮いた分が一覧の枠で切れないよう、一覧の上下に余白を取ってある（.track の padding） */
   @media (hover: hover) {
-    .fx-cardhover .kcard { transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease; }
-    .fx-cardhover .kcard .bg { transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
-    .fx-cardhover .kcard:hover { transform: translateY(-8px); box-shadow: 0 14px 28px rgba(20,40,90,.18); }
-    .fx-cardhover .kcard:hover .bg { transform: scale(1.07); }
+    .kcard { transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease; }
+    .kcard .bg { transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
+    .kcard:hover { transform: translateY(-8px); box-shadow: 0 14px 28px rgba(20,40,90,.18); }
+    .kcard:hover .bg { transform: scale(1.07); }
   }
 
-  /* 6. いちごとキラキラ：背景と筆の跡のあいだに canvas を重ねる */
-  .hero .sparkles { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; display: none; }
-  .fx-sparkle .hero .sparkles { display: block; }
+  /* 6. いちご（昼の側）とキラキラ（夜の側）：背景と筆の跡のあいだに canvas を重ねる */
+  .hero .sparkles { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
-  /* 見比べ用の切り替えパネル（URLに ?try を付けたときだけ出る） */
-  .fx-panel {
-    position: fixed; right: 12px; bottom: 12px; z-index: 50;
-    background: rgba(20,40,90,.92); color: #fff; border-radius: 10px; padding: 10px 14px 12px;
-    font-size: 13px; line-height: 1.9; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  @media (prefers-reduced-motion: reduce) {
+    .hero .bg, .hero .mark { translate: none; }
+    .kcard, .kcard .bg { transition: none; }
+    .kcard:hover { transform: none; }
+    .kcard:hover .bg { transform: none; }
+    .hero .sparkles { display: none; }
   }
-  .fx-panel b { display: block; font-size: 12px; letter-spacing: .1em; opacity: .8; }
-  .fx-panel label { display: block; cursor: pointer; }
-  .fx-panel input { margin-right: 6px; vertical-align: -2px; }
 </style>
 </head>
 <body>
@@ -693,68 +683,36 @@
     } else run();
   })();
 
-  // ===== 見比べ用（1・4・5・6）。?try を付けたときだけパネルを出す。?try=1,4 のように番号で最初から入れられる =====
+  // ===== 4・6. バナーの奥行きと、いちご・キラキラ =====
   (function () {
-    const root = document.documentElement;
-    const FX = { 1: ["fx-daynight", "1 昼から夜へ"], 4: ["fx-parallax", "4 バナーの奥行き"], 5: ["fx-cardhover", "5 カードを指す"], 6: ["fx-sparkle", "6 いちごとキラキラ"] };
-    const q = new URLSearchParams(location.search);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const has = c => root.classList.contains(c) && !reduce;
-    const flow = document.querySelector(".flow"), items = [...flow.querySelectorAll("li")];
+    if (reduce) return;
     const hero = document.querySelector(".hero");
 
-    // 1. 昼→夕方→夜の色（生成り → 茜 → 紺）を、「一日まるごと」の節の位置に合わせて混ぜる
-    const SKY = [[244, 237, 221], [246, 206, 168], [222, 128, 118], [52, 44, 96], [20, 28, 64]];
-    const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
-    function sky(p) {
-      const x = p * (SKY.length - 1), i = Math.min(SKY.length - 2, Math.floor(x));
-      return mix(SKY[i], SKY[i + 1], x - i);
-    }
-
+    // 4. 奥行き：スクロール量に合わせて、背景は 0.35 倍で下へ、筆の跡とタイトルは 0.12 倍で上へ
     function onScroll() {
-      if (has("fx-daynight")) {
-        const r = flow.getBoundingClientRect(), vh = innerHeight;
-        const p = Math.min(1, Math.max(0, (vh * .9 - r.top) / (vh * .8)));  // 節の上端が画面の下から1割→上から1割へ動くあいだに、昼→夜
-        flow.style.setProperty("--sky", `rgb(${sky(p)})`);
-        flow.style.setProperty("--sky-ink", p > .55 ? "#fff" : "var(--navy)");
-        flow.style.setProperty("--sky-accent", p > .55 ? "#FFC7A8" : "var(--red)");
-        const now = Math.min(2, Math.floor(p * 3));
-        items.forEach((li, i) => li.classList.toggle("now", i === now));
-      } else {
-        ["--sky", "--sky-ink", "--sky-accent"].forEach(v => flow.style.removeProperty(v));
-        items.forEach(li => li.classList.remove("now"));
-      }
-      if (has("fx-parallax")) {
-        const y = Math.min(scrollY, hero.offsetHeight);
-        hero.style.setProperty("--bgy", (y * .35).toFixed(1) + "px");
-        hero.style.setProperty("--mky", (y * -.12).toFixed(1) + "px");
-      }
+      const y = Math.min(scrollY, hero.offsetHeight);
+      hero.style.setProperty("--bgy", (y * .35).toFixed(1) + "px");
+      hero.style.setProperty("--mky", (y * -.12).toFixed(1) + "px");
     }
     addEventListener("scroll", () => requestAnimationFrame(onScroll), { passive: true });
-    addEventListener("resize", onScroll);
-
-    if (q.has("try")) {
-      (q.get("try") || "").split(",").forEach(n => FX[n] && root.classList.add(FX[n][0]));
-      const panel = document.createElement("div");
-      panel.className = "fx-panel";
-      panel.innerHTML = "<b>見比べ用</b>" + Object.values(FX).map(([c, label]) =>
-        `<label><input type="checkbox" data-c="${c}"${root.classList.contains(c) ? " checked" : ""}>${label}</label>`).join("");
-      panel.addEventListener("change", e => { root.classList.toggle(e.target.dataset.c, e.target.checked); onScroll(); });
-      document.body.appendChild(panel);
-    }
     onScroll();
 
-    // 6. いちごとキラキラ：数を絞り、ゆっくり上へ漂わせる。バナーが見えていないときは止める
+    // 6. 背景の左（昼）にはいちご、右（夜）にはキラキラだけを出す。境目は背景の絵で昼と夜が切り替わるあたり（幅の48%）。
+    //    バナーが見えていないときは止める
+    const SPLIT = .48;
     const cv = hero.querySelector(".sparkles"), ctx = cv.getContext("2d");
     let W = 0, H = 0, parts = [], visible = true;
     function size() {
       const dpr = Math.min(2, devicePixelRatio || 1);
       W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      parts = Array.from({ length: Math.round(Math.min(26, W / 50)) }, () => spawn(true));
+      const n = Math.round(Math.min(26, Math.max(10, W / 50)));
+      parts = Array.from({ length: n }, (_, i) => spawn(true, i % 2 === 0));
     }
-    function spawn(initial) {
-      const isBerry = Math.random() < .3;
-      return { x: Math.random() * W, y: initial ? Math.random() * H : H + 20, r: isBerry ? 6 + Math.random() * 5 : 3 + Math.random() * 5,
+    // 昼の側は左端〜境目の少し手前、夜の側は境目の少し先〜右端（揺れで境目を越えないよう余白を取る）
+    function spawn(initial, isBerry) {
+      const x = isBerry ? Math.random() * (W * SPLIT - 30) + 8 : W * SPLIT + 30 + Math.random() * (W * (1 - SPLIT) - 38);
+      return { x, y: initial ? Math.random() * H : H + 20, r: isBerry ? 6 + Math.random() * 5 : 3 + Math.random() * 5,
         vy: .15 + Math.random() * .35, sway: Math.random() * 6.28, berry: isBerry, tw: Math.random() * 6.28, rot: (Math.random() - .5) * .6 };
     }
     function star(x, y, r, a) {
@@ -775,7 +733,7 @@
       ctx.restore();
     }
     function frame() {
-      if (has("fx-sparkle") && visible) {
+      if (visible) {
         if (W !== cv.clientWidth || H !== cv.clientHeight) size();
         ctx.clearRect(0, 0, W, H);
         parts.forEach((p, i) => {
@@ -783,7 +741,7 @@
           const x = p.x + Math.sin(p.sway) * 14;
           if (p.berry) berry(x, p.y, p.r, .85, p.rot + Math.sin(p.sway) * .2);
           else star(x, p.y, p.r, .35 + .55 * Math.abs(Math.sin(p.tw)));
-          if (p.y < -20) parts[i] = spawn(false);
+          if (p.y < -20) parts[i] = spawn(false, p.berry);
         });
       }
       requestAnimationFrame(frame);
