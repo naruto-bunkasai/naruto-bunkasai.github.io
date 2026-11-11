@@ -690,8 +690,11 @@
     const hero = document.querySelector(".hero");
 
     // 4. 奥行き：スクロール量に合わせて、背景は 0.35 倍で下へ、筆の跡とタイトルは 0.12 倍で上へ
+    //    数えるのは、バナーの上端が画面の上端を過ぎてからのスクロール量。ヘッダーが見えている間に背景を下げると、
+    //    背景の上にバナーの地の色の隙間が見える。iPhoneで一番上からさらに引っぱると scrollY がマイナスになり、
+    //    背景が上へずれて下に隙間が出るので、0未満も0として扱う
     function onScroll() {
-      const y = Math.min(scrollY, hero.offsetHeight);
+      const y = Math.min(Math.max(scrollY - hero.offsetTop, 0), hero.offsetHeight);
       hero.style.setProperty("--bgy", (y * .35).toFixed(1) + "px");
       hero.style.setProperty("--mky", (y * -.12).toFixed(1) + "px");
     }
