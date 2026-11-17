@@ -95,8 +95,11 @@ label(sx + 120, sy - 10, "会場", 40, RED)
 label(sx + 120, sy + 28, "TODAベリーファーム", 24, NAVY)
 label(sx + 120, sy + 58, "（旧北灘西小学校）", 24, NAVY)
 # 入口
-label(jx - 30, jy + 70, "★ 入口はここだけ", 32, RED, "end")
-label(jx - 30, jy + 108, "（ヘアピンカーブ）", 24, RED, "end")
+# 文字の★は地図の★と形も色も違って見えるので使わない。引き出し線で★につなぐ
+lx, ly = jx - 75, jy - 120                         # 海側の空いている所（左上）に置く
+out.append(f'<path d="M{jx-4:.0f},{jy-34:.0f} L{lx+6:.0f},{ly+48:.0f}" stroke="{RED}" stroke-width="3" fill="none"/>')
+label(lx + 10, ly + 4, "入口はここだけ", 32, RED, "end")
+label(lx + 10, ly + 40, "（ヘアピンカーブ）", 24, RED, "end")
 # 道と方面
 label(W - 20, 128, "鳴門方面 →", 28, NAVY, "end")
 label(20, H - 40, "← 引田方面", 28, NAVY)

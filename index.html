@@ -348,7 +348,7 @@
   .access .routemap img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
   .access .routemap figcaption { margin-top: 8px; font-size: 12.5px; color: var(--navy-soft); }
   .access .routemap .k { display: inline-block; width: 1.4em; text-align: center; font-weight: 700; color: var(--red); }
-  .access .routemap .star { color: #C9A227; }
+  .ico-star { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; }
   .access .mapbox { margin-top: 20px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; background: var(--mist); }
   .access .mapbox iframe { display: block; width: 100%; height: 100%; border: 0; }
   @media (max-width: 720px) { .access .mapbox { aspect-ratio: 4 / 3; } }
@@ -585,10 +585,10 @@
           <div class="car-note" role="note" aria-labelledby="car-note-h">
             <p class="h" id="car-note-h">お車でお越しの方へ（大切なお願い）</p>
             <ul>
-              <li>会場への入口は<b>1か所だけ</b>です。国道11号の、県道41号との分かれ道（ヘアピンカーブ・下の地図の★）から入ってください。</li>
+              <li>会場への入口は<b>1か所だけ</b>です。国道11号の、県道41号との分かれ道（ヘアピンカーブ・下の地図の<svg class="ico-star" viewBox="-16 -16 32 32" aria-hidden="true"><polygon points="0.0,-14.0 3.5,-4.9 13.3,-4.3 5.7,1.9 8.2,11.3 0.0,6.0 -8.2,11.3 -5.7,1.9 -13.3,-4.3 -3.5,-4.9" fill="#F3D774" stroke="#C8323C" stroke-width="2.2"/></svg>）から入ってください。</li>
               <li><b>国道11号から集落の細い道には入らないでください。</b>地域の方の生活道路で、車どうしがすれ違えません。</li>
               <li>当日は分かれ道に、案内の看板やスタッフがいます。案内に従ってください。</li>
-              <li>カーナビやスマホの地図に住所を入れると、細い道を案内されることがあります。★の入口を目指してください。</li>
+              <li>カーナビやスマホの地図に住所を入れると、細い道を案内されることがあります。略図の<svg class="ico-star" viewBox="-16 -16 32 32" aria-hidden="true"><polygon points="0.0,-14.0 3.5,-4.9 13.3,-4.3 5.7,1.9 8.2,11.3 0.0,6.0 -8.2,11.3 -5.7,1.9 -13.3,-4.3 -3.5,-4.9" fill="#F3D774" stroke="#C8323C" stroke-width="2.2"/></svg>の入口を目指してください。</li>
               <li>お帰りの道は、決まり次第お知らせします。</li>
             </ul>
           </div>
@@ -609,7 +609,7 @@
       </div>
       <figure class="routemap">
         <img src="assets/img/access-map.svg" alt="会場までの略図。国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）の★からだけ会場へ入る。国道11号から集落へ入る細い道には×が付いている" width="1000" height="890" loading="lazy">
-        <figcaption><span class="k star">★</span>入口（この1か所だけ）　<span class="k x">×</span>入らないでください（集落の生活道路）　<span class="k dot">…</span>入口から会場へ</figcaption>
+        <figcaption><span class="k"><svg class="ico-star" viewBox="-16 -16 32 32" aria-hidden="true"><polygon points="0.0,-14.0 3.5,-4.9 13.3,-4.3 5.7,1.9 8.2,11.3 0.0,6.0 -8.2,11.3 -5.7,1.9 -13.3,-4.3 -3.5,-4.9" fill="#F3D774" stroke="#C8323C" stroke-width="2.2"/></svg></span>入口（この1か所だけ）　<span class="k x">×</span>入らないでください（集落の生活道路）　<span class="k dot">…</span>入口から会場へ</figcaption>
       </figure>
       <div class="mapbox">
         <iframe src="https://maps.google.com/maps?q=34.213667,134.481614&amp;z=15&amp;output=embed" title="車の入口（国道11号と県道41号の分かれ道）の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
