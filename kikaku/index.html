@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 企画ページ。晴菜さんの共通フォーマット（2026-11-17）を組み込んだもの。どの企画を出すかは ?program=… で選ぶ。中身は ../assets/kikaku.js -->
+  <title>企画紹介｜鳴門文化祭</title>
+  <meta name="theme-color" content="#14285A">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 58C18 50 8 38 10 26c1-8 9-12 22-12s21 4 22 12c2 12-8 24-22 32z' fill='%23C8323C'/%3E%3Cpath d='M20 16c4-6 8-6 12-2 4-4 8-4 12 2-6 3-18 3-24 0z' fill='%235E9B4F'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="../assets/kikaku.js" defer></script>
+  <script src="programs.js" defer></script>
+</head>
+<body>
+  <div id="festival-page">
+    <header class="site-header">
+      <a class="wordmark" href="../"><img src="../assets/img/logo.webp" alt="鳴門文化祭 -Berry happy!-" width="720" height="240"></a>
+      <nav aria-label="メインメニュー">
+        <a class="nav-plain" href="../#pickup">企画紹介</a>
+        <a class="nav-plain" href="../#access">会場・アクセス</a>
+        <a class="nav-pill" href="../#news">最新情報 <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+    <main>
+      <div class="top-layout wrap">
+      <div class="page-intro wrap">
+        <nav class="breadcrumbs" aria-label="現在位置">
+          <a href="../">ホーム</a>
+          <span aria-hidden="true">/</span>
+          <a href="../#pickup">おすすめの企画</a>
+          <span aria-hidden="true">/</span>
+          <span id="breadcrumb-title" aria-current="page"></span>
+        </nav>
+        <div class="title-row">
+          <div class="title-block">
+            <p class="eyebrow" id="program-english"></p>
+            <p class="tag" id="program-tag"></p>
+            <h1 id="program-title"></h1>
+          </div>
+          <p class="hero-catch" id="program-catch"></p>
+        </div>
+      </div>
+      <figure class="hero wrap">
+        <div class="hero-image"><img id="program-image" src="" alt="" width="800" height="1071"></div>
+        <figcaption>画像は企画のイメージです。</figcaption>
+      </figure>
+      </div>
+      <section class="overview wrap" aria-labelledby="about-heading">
+        <div class="about">
+          <p class="eyebrow">ABOUT THIS PROGRAM</p>
+          <h2 id="about-heading"></h2>
+          <p class="body-copy" id="program-description"></p>
+        </div>
+        <section class="information" aria-labelledby="information-heading">
+          <p class="eyebrow">INFORMATION</p>
+          <h2 id="information-heading">開催・参加案内</h2>
+          <dl id="program-information"></dl>
+          <p class="fee-note">文化祭は入場無料です。飲食・一部企画は有料です。</p>
+        </section>
+      </section>
+      <section class="coming wrap" aria-labelledby="coming-heading">
+        <p class="eyebrow">COMING SOON</p>
+        <div class="coming-row">
+          <h2 id="coming-heading">詳しい内容を、準備しています。</h2>
+          <p id="coming-description"></p>
+        </div>
+        <div class="coming-bottom"><span id="coming-status"></span><a href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener noreferrer">Instagramで最新情報を見る <span aria-hidden="true">↗</span></a></div>
+      </section>
+      <section class="other wrap" aria-labelledby="other-heading">
+        <div class="other-heading"><div><p class="eyebrow">MORE TO ENJOY</p><h2 id="other-heading">ほかの企画も、のぞいてみよう。</h2></div><span>鳴門文化祭の楽しみ方</span></div>
+        <div class="related-list" id="related-list"></div>
+      </section>
+      <div class="return wrap"><a href="../#pickup"><span aria-hidden="true">←</span> おすすめの企画へ戻る</a></div>
+    </main>
+    <footer class="site-footer"><p>鳴門文化祭</p><i>- Berry happy -</i><small>NARUTO CULTURE FESTIVAL 2026</small><span class="org">主催　鳴門市<br>企画・運営　鳴門文化祭実行委員会・UZULAB・（株）UZUARTS・（株）エンターラル</span></footer>
+  </div>
+</body>
+</html>
