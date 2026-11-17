@@ -24,6 +24,7 @@
     - キービジュアルは背景・筆の跡・タイトルの3枚を重ね、読み込み時に動かす（2026-11-07）
     - 2026-11-17：企画カードの中身を assets/kikaku.js に移し、晴菜さんの企画ページの型（kikaku/）とつないだ。
       文言はチラシの完成版（11/16）にそろえ、ロゴ・問い合わせ・学生ボランティア募集・点灯式の時刻・交通案内・主催を足した（11/16の打ち合わせ）
+    - 2026-11-17（2回目）：ページ内の移動（画面上に貼り付くタブ）、「楽しみ方から探す」で企画をしぼるボタン、地図の埋め込み、FAQを9問に、問い合わせを独立の節に。ロゴはドライブの最新版（11/16）
   */
   :root {
     --navy: #14285A;
@@ -168,46 +169,53 @@
   .fee { text-align: right; }
   .fee strong { display: block; color: var(--red); font-weight: 600; font-size: 16px; }
   .fee small { font-size: 11px; color: var(--muted); }
-  /* 問い合わせ（11/16の打ち合わせで「日時・会場のあたりに、フォームのURLとQR」） */
-  .contact-row {
-    grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; gap: 18px;
-    margin: 4px 0 0; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 13px;
-  }
-  .contact-row .qr { width: 76px; height: 76px; }
-  .contact-row .btn-line {
-    display: inline-flex; align-items: center; gap: 14px; text-decoration: none;
-    border: 1px solid var(--navy); border-radius: 999px; padding: 8px 20px; font-weight: 600;
-  }
-  .contact-row .tel { display: block; font-size: 12px; color: var(--muted); }
-  @media (max-width: 720px) {
-    .contact-row { flex-direction: column; gap: 8px; }
-    .contact-row .qr { display: none; }
-  }
   @media (max-width: 720px) {
     .info-bar .wrap { grid-template-columns: 1fr; text-align: center; gap: 8px; }
     .date { justify-content: center; flex-wrap: wrap; }
     .fee { text-align: center; }
   }
 
-  /* 5つの楽しみ方 */
-  .cats ul {
-    list-style: none; margin: 0; padding: 28px 0 8px;
-    display: grid; grid-template-columns: repeat(5, 1fr);
+  /* ページ内の移動（画面の上に貼り付く）。今いる節に色が付く */
+  .secnav { position: sticky; top: 0; z-index: 20; background: rgba(253,251,244,.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .secnav ul { list-style: none; margin: 0 auto; padding: 10px 20px; max-width: 1120px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .secnav ul::-webkit-scrollbar { display: none; }
+  .secnav a {
+    display: block; white-space: nowrap; text-decoration: none; font-size: 13px; font-weight: 600;
+    padding: 7px 16px; border: 1px solid var(--navy); border-radius: 999px; background: #fff;
   }
-  .cats li { border-left: 1px solid var(--line); }
-  .cats li:first-child { border-left: 0; }
-  .cats a {
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
-    text-decoration: none; padding: 4px 4px 10px;
+  .secnav a:hover, .secnav a.is-current { background: var(--navy); color: #fff; }
+  .secnav li[hidden] { display: none; }
+  [id] { scroll-margin-top: 64px; }
+
+  /* 楽しみ方から探す：押すと、おすすめの企画をその楽しみ方の企画だけにしぼる */
+  .cats { padding: 36px 0 4px; }
+  .cats .lead { text-align: center; margin: 0 0 14px; font-size: 14px; font-weight: 600; letter-spacing: .12em; }
+  .cats .lead small { display: block; font-size: 11.5px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
+  .cats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .cats button {
+    width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    font: inherit; color: inherit; cursor: pointer;
+    padding: 14px 4px 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: 0 3px 0 var(--line); transition: transform .15s, box-shadow .15s, border-color .15s;
   }
+  .cats button:hover { border-color: var(--navy); }
+  .cats button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
+  .cats button[aria-pressed="true"] { border-color: var(--red); box-shadow: 0 3px 0 var(--red); }
   .cats svg { width: 30px; height: 30px; margin-bottom: 6px; }
   .cats b { font-weight: 600; font-size: 17px; letter-spacing: .08em; }
   .cats small { font-size: 10.5px; color: var(--muted); }
+  .cats .go { margin-top: 6px; font-size: 11px; color: var(--red); }
   @media (max-width: 560px) {
+    .cats ul { gap: 6px; }
+    .cats button { padding: 10px 2px 8px; border-radius: 10px; }
     .cats svg { width: 24px; height: 24px; }
     .cats b { font-size: 13px; letter-spacing: 0; }
-    .cats small { font-size: 9px; }
+    .cats small { font-size: 9.5px; }
+    .cats .go { font-size: 10px; }
   }
+  .filter-state { text-align: center; margin: 10px 0 0; font-size: 13px; }
+  .filter-state[hidden] { display: none; }
+  .filter-state button { margin-left: 10px; font: inherit; font-size: 12px; cursor: pointer; background: none; border: 1px solid var(--navy); border-radius: 999px; padding: 3px 14px; color: var(--navy); }
 
   /* おすすめの企画（横に流れるカード） */
   .pickup { padding: 56px 0 40px; }
@@ -222,6 +230,7 @@
   .marquee::-webkit-scrollbar { display: none; }
   .marquee:active { cursor: grabbing; }
   .track { display: flex; gap: 20px; padding: 16px 20px 36px; width: max-content; }
+  .track[data-loop="0"] { margin: 0 auto; }
   .kcard {
     position: relative;
     flex: 0 0 auto;
@@ -254,7 +263,7 @@
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(90deg, var(--night-bg) 0%, rgba(21,23,63,.6) 45%, rgba(21,23,63,.2));
   }
-  .daynight .tag { background: linear-gradient(90deg, var(--day) 0 50%, var(--night) 50% 100%); color: var(--navy); }
+  .daynight .tag { background: var(--night); color: #fff; }
   .daynight .meta { background: rgba(255,255,255,.12); }
   .daynight .more { background: var(--night); }
   .kcard.allday { background: #F6E3E3; color: var(--navy); }
@@ -327,6 +336,9 @@
   .access .how { margin: 18px 0 0; font-size: 13px; line-height: 1.9; }
   .access .how dt { display: inline-block; margin-top: 8px; background: var(--navy); color: #fff; font-size: 11px; padding: 0 10px; border-radius: 2px; }
   .access .how dd { margin: 4px 0 0; }
+  .access .mapbox { margin-top: 32px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; background: var(--mist); }
+  .access .mapbox iframe { display: block; width: 100%; height: 100%; border: 0; }
+  @media (max-width: 720px) { .access .mapbox { aspect-ratio: 4 / 3; } }
   @media (max-width: 720px) { .access .cols { grid-template-columns: 1fr; gap: 28px; } }
 
   /* 学生ボランティア募集（締切の11/21を過ぎたらJSが隠す） */
@@ -342,6 +354,23 @@
   }
   .volunteer[hidden] { display: none; }
   @media (max-width: 720px) { .volunteer .wrap { grid-template-columns: 1fr; gap: 14px; } }
+
+  /* お問い合わせ */
+  .contact { background: var(--beige); padding: 52px 0; }
+  .contact .box { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; margin-top: 22px; background: #fff; border-radius: 12px; padding: 26px 30px; }
+  .contact .qr { width: 132px; height: 132px; }
+  .contact .btn {
+    display: inline-flex; justify-content: space-between; align-items: center; gap: 30px;
+    background: var(--navy); color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 999px; font-size: 14px;
+  }
+  .contact dl { margin: 18px 0 0; display: grid; grid-template-columns: 5em 1fr; gap: 6px 10px; font-size: 13.5px; }
+  .contact dt { font-weight: 600; }
+  .contact dd { margin: 0; }
+  @media (max-width: 720px) {
+    .contact .box { grid-template-columns: 1fr; padding: 22px 20px; }
+    .contact .qr { display: none; }
+    .contact .btn { width: 100%; }
+  }
 
   /* 最新情報 */
   .news { background: var(--mist); padding: 26px 0; }
@@ -476,42 +505,48 @@
       <p class="venue">TODAベリーファーム<br>旧北灘西小学校</p>
       <p class="fee"><strong>入場無料</strong><small>飲食・一部企画は有料</small></p>
       <p class="countdown" id="countdown" hidden>開催まで あと<b id="days">0</b>日</p>
-      <div class="contact-row">
-        <img class="qr" src="assets/img/qr-contact.svg" alt="お問い合わせフォームのQRコード" width="164" height="164">
-        <div>
-          <a class="btn-line" href="https://docs.google.com/forms/d/e/1FAIpQLScpRm1brVTuB1Qs35dLL6UgavZRF1UiPTYvi84n5y3vBfInzQ/viewform" target="_blank" rel="noopener">お問い合わせフォーム <span aria-hidden="true">↗</span></a>
-          <span class="tel">電話 088-677-5334（うずコワーク）／ <a href="mailto:naruto.bunkasai.uzl@gmail.com">naruto.bunkasai.uzl@gmail.com</a></span>
-        </div>
-      </div>
     </div>
   </section>
 
-  <nav class="cats" aria-label="楽しみ方">
+  <nav class="secnav" aria-label="このページの内容">
+    <ul>
+      <li><a href="#pickup">おすすめの企画</a></li>
+      <li><a href="#schedule">スケジュール</a></li>
+      <li><a href="#access">会場・アクセス</a></li>
+      <li data-volunteer><a href="#volunteer">ボランティア募集</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <section class="cats" aria-label="楽しみ方から探す">
     <div class="wrap">
+      <p class="lead">楽しみ方から探す<small>押すと、下の「おすすめの企画」がその企画だけになります</small></p>
       <ul>
-        <li><a href="#pickup">
+        <li><button type="button" data-cat="eat" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#C8323C" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 4v9a3 3 0 0 0 6 0V4M12 4v24M21 28V4c3 2 4 6 4 10h-4"/></svg>
-          <b>食べる</b><small>飲食・カフェ</small></a></li>
-        <li><a href="#pickup">
+          <b>食べる</b><small>飲食・カフェ</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+        <li><button type="button" data-cat="play" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#C9A227" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7.5"/><circle cx="16" cy="16" r="3"/></svg>
-          <b>遊ぶ</b><small>縁日・体験</small></a></li>
-        <li><a href="#pickup">
+          <b>遊ぶ</b><small>縁日・体験</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+        <li><button type="button" data-cat="watch" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#14285A" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M13 23V6l10 3"/><circle cx="9.5" cy="23" r="3.5"/></svg>
-          <b>観る</b><small>ステージ</small></a></li>
-        <li><a href="#pickup">
+          <b>観る</b><small>ステージ・光</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+        <li><button type="button" data-cat="buy" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#3E8E86" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="20" height="21" rx="2"/><path d="M6 11h20M12 15a4 4 0 0 0 8 0"/></svg>
-          <b>買う</b><small>出店・販売</small></a></li>
-        <li><a href="#pickup">
+          <b>買う</b><small>出店・作る</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+        <li><button type="button" data-cat="night" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#14285A" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 26A11 11 0 1 1 15 5a9 9 0 0 0 11 13 11 11 0 0 1-6 8z"/><path d="M24 5v4M22 7h4"/></svg>
-          <b>夜の企画</b><small>恐怖と光</small></a></li>
+          <b>夜の企画</b><small>恐怖と光</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
       </ul>
     </div>
-  </nav>
+  </section>
 
   <section class="pickup" id="pickup" aria-labelledby="pickup-h">
     <div class="wrap center">
       <span class="eyebrow">Pick up</span>
       <h2 class="heading" id="pickup-h">おすすめの企画</h2>
+      <p class="filter-state" id="filter-state" hidden><span id="filter-label"></span><button type="button" id="filter-clear">すべて表示</button></p>
     </div>
     <div class="marquee" id="marquee" tabindex="0" aria-label="企画の一覧（横にスクロールできます）">
       <div class="track" id="track"></div>
@@ -519,7 +554,7 @@
     <p class="note center">ビジュアルは生成したイメージです。当日の会場・装飾・提供内容を示すものではありません。</p>
   </section>
 
-  <section class="flow" aria-labelledby="flow-h">
+  <section class="flow" id="schedule" aria-labelledby="flow-h">
     <div class="wrap">
       <div class="center">
         <span class="eyebrow">Day to night</span>
@@ -559,6 +594,9 @@
           <tr><th scope="row">雨天</th><td>開催</td></tr>
         </table>
       </div>
+      <div class="mapbox">
+        <iframe src="https://maps.google.com/maps?q=%E9%B3%B4%E9%96%80%E5%B8%82%E5%8C%97%E7%81%98%E7%94%BA%E6%8A%98%E9%87%8E%E5%AD%97%E5%B1%8B%E6%95%B764-3&amp;z=13&amp;output=embed" title="会場（TODAベリーファーム・旧北灘西小学校）の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
     </div>
   </section>
 
@@ -589,19 +627,64 @@
     </div>
   </section>
 
-  <section class="faq" aria-labelledby="faq-h">
+  <section class="faq" id="faq" aria-labelledby="faq-h">
     <div class="wrap">
       <span class="eyebrow">FAQ</span>
       <h2 class="heading" id="faq-h">来る前に、知っておきたいこと。</h2>
       <div class="list">
         <details>
           <summary>入場料はかかりますか？</summary>
-          <div class="a"><p>入場は無料です。飲食と一部の企画は有料です。</p></div>
+          <div class="a"><p>入場は無料です。飲食と一部の企画（お化け屋敷など）は有料です。</p></div>
+        </details>
+        <details>
+          <summary>お支払いの方法は？</summary>
+          <div class="a"><p>当日のお支払いは現金でお願いします。</p></div>
         </details>
         <details>
           <summary>雨の日でも開催しますか？</summary>
           <div class="a"><p>雨天でも開催します。</p></div>
         </details>
+        <details>
+          <summary>車で行けますか？ 駐車場はありますか？</summary>
+          <div class="a"><p>会場に駐車場（約200台）があります。鳴門ICから約30分、引田ICから約15分（国道11号経由）です。</p></div>
+        </details>
+        <details>
+          <summary>電車やバスで行けますか？</summary>
+          <div class="a"><p>JR鳴門駅の近くの「鳴門駅前」から徳島バス引田線に乗り、「北灘西小学校前」で降りて徒歩約2分です。</p></div>
+        </details>
+        <details>
+          <summary>お化け屋敷はいくらですか？ 昼でも入れますか？</summary>
+          <div class="a"><p>参加費は200円です。昼は脱出ゲーム、夜はお化け屋敷として開きます。時間は決まり次第お知らせします。</p></div>
+        </details>
+        <details>
+          <summary>各企画の時間やステージのタイムテーブルは？</summary>
+          <div class="a"><p>決まり次第、このページと<a href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">公式Instagram</a>でお知らせします。点灯式は17:15ごろの予定です。</p></div>
+        </details>
+        <details data-volunteer>
+          <summary>ボランティアとして参加できますか？</summary>
+          <div class="a"><p>学生ボランティアを11月21日（土）まで募集しています。<a href="#volunteer">学生ボランティア募集</a>をご覧ください。</p></div>
+        </details>
+        <details>
+          <summary>問い合わせはどこにすればよいですか？</summary>
+          <div class="a"><p><a href="#contact">お問い合わせ</a>のフォーム・電話・メールからどうぞ。</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <span class="eyebrow">Contact</span>
+      <h2 class="heading" id="contact-h">お問い合わせ</h2>
+      <div class="box">
+        <img class="qr" src="assets/img/qr-contact.svg" alt="お問い合わせフォームのQRコード" width="164" height="164">
+        <div>
+          <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLScpRm1brVTuB1Qs35dLL6UgavZRF1UiPTYvi84n5y3vBfInzQ/viewform" target="_blank" rel="noopener">お問い合わせフォーム <span aria-hidden="true">↗</span></a>
+          <dl>
+            <dt>電話</dt><dd><a href="tel:0886775334">088-677-5334</a>（うずコワーク）</dd>
+            <dt>メール</dt><dd><a href="mailto:naruto.bunkasai.uzl@gmail.com">naruto.bunkasai.uzl@gmail.com</a></dd>
+          </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -639,11 +722,33 @@
   const marquee = document.getElementById("marquee");
   const track = document.getElementById("track");
   // 同じ並びを2回つなげ、半分まで流れたら先頭へ戻すことで、切れ目なく流し続ける
-  track.innerHTML = KIKAKU.map(k => cardHTML(k, false)).join("") + KIKAKU.map(k => cardHTML(k, true)).join("");
+  // 楽しみ方のタブで、表示する企画をしぼる（cats は assets/kikaku.js）
+  const CAT_LABEL = { eat: "食べる", play: "遊ぶ", watch: "観る", buy: "買う", night: "夜の企画" };
+  let shown = KIKAKU;
+  function fill() {
+    // 4件以上なら流し続ける（同じ並びを2回つなぐ）。3件以下なら止めて中央に並べる
+    const loop = shown.length >= 4;
+    track.dataset.loop = loop ? "1" : "0";
+    track.innerHTML = shown.map(k => cardHTML(k, false)).join("") + (loop ? shown.map(k => cardHTML(k, true)).join("") : "");
+    marquee.scrollLeft = 0; pos = 0;
+  }
+  function setFilter(cat) {
+    shown = cat ? KIKAKU.filter(k => (k.cats || []).includes(cat)) : KIKAKU;
+    document.querySelectorAll(".cats button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.cat === cat)));
+    document.getElementById("filter-state").hidden = !cat;
+    if (cat) document.getElementById("filter-label").textContent = "「" + CAT_LABEL[cat] + "」の企画（" + shown.length + "件）";
+    fill();
+  }
+  document.querySelectorAll(".cats button").forEach(b => b.addEventListener("click", () => {
+    setFilter(b.getAttribute("aria-pressed") === "true" ? null : b.dataset.cat);
+    document.getElementById("pickup").scrollIntoView({ behavior: "smooth" });
+  }));
+  document.getElementById("filter-clear").addEventListener("click", () => setFilter(null));
 
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const SPEED = 0.35;            // 1フレームあたりのpx（ゆっくり）
   let paused = false, resumeTimer = null, pos = 0;
+  fill();
 
   function half() { return track.scrollWidth / 2; }
   function pauseFor(ms) {
@@ -652,6 +757,7 @@
     resumeTimer = setTimeout(() => { pos = marquee.scrollLeft; paused = false; }, ms);
   }
   function tick() {
+    if (track.dataset.loop === "0") { requestAnimationFrame(tick); return; }
     if (!paused && !reduce) {
       pos += SPEED;
       if (pos >= half()) pos -= half();
@@ -696,7 +802,7 @@
     const groups = [
       [".pickup .wrap", 0], [".marquee", .1], [".flow .center", 0], [".access .eyebrow", 0], [".access .heading", 0],
       [".access .cols > *", .12], [".news .wrap > *", .1], [".volunteer .wrap > *", .1], [".faq .eyebrow", 0], [".faq .heading", 0], [".faq details", .08],
-      [".cats li", .07], [".flow li", .14], [".flow .note", 0]
+      [".cats li", .07], [".contact .wrap > *", .1], [".flow li", .14], [".flow .note", 0]
     ];
     const els = [];
     groups.forEach(([sel, step]) => document.querySelectorAll(sel).forEach((el, i) => {
@@ -710,7 +816,24 @@
   })();
 
   // ===== 学生ボランティア募集：日本時間で11/22になったら隠す =====
-  if (Date.now() + 9 * 3600e3 >= Date.UTC(2026, 10, 22)) document.getElementById("volunteer").hidden = true;
+  if (Date.now() + 9 * 3600e3 >= Date.UTC(2026, 10, 22)) {
+    document.getElementById("volunteer").hidden = true;
+    document.querySelectorAll("[data-volunteer]").forEach(el => el.hidden = true);
+  }
+
+  // ===== ページ内の移動：今いる節のタブに色を付ける =====
+  (function () {
+    const links = [...document.querySelectorAll(".secnav a")];
+    const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+    if (!("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      links.forEach(a => a.classList.remove("is-current"));
+      const a = map.get(e.target.id);
+      if (a) { a.classList.add("is-current"); a.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+    }), { rootMargin: "-45% 0px -50% 0px" });
+    map.forEach((a, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  })();
 
   // ===== 7. 本番までの日数（日本時間で数える。当日は「本日開催」、終わったら出さない） =====
   (function () {

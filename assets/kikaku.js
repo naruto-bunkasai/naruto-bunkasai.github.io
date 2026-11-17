@@ -4,10 +4,11 @@
 //
 // part: day（昼の部）/ night（夜の部）/ allday（終日）/ daynight（昼も夜も）
 // theme: 企画ページの色（is-day / is-night / ""）
+// cats: トップの「楽しみ方から探す」で、どのタブに出すか（eat 食べる / play 遊ぶ / watch 観る / buy 買う / night 夜の企画）
 // information: 確定した項目だけ書く。書いていない項目は「順次公開」と出る
 window.KIKAKU = [
   {
-    id: "obakeyashiki", part: "daynight", theme: "is-night",
+    id: "obakeyashiki", cats: ["play", "night"], part: "daynight", theme: "is-night",
     name: "お化け屋敷", title: ["お化け屋敷"], english: "HAUNTED SCHOOL",
     catch: ["いつもの校舎が、", "恐怖の舞台に…"],
     card: ["いつもと違う、夜の校舎。", "友だちと、いざ暗闇の奥へ。", "昼は脱出ゲームを開催。"],
@@ -20,7 +21,7 @@ window.KIKAKU = [
     status: "開催時間・場所・参加条件を順次公開"
   },
   {
-    id: "planetarium", part: "allday", theme: "",
+    id: "planetarium", cats: ["eat"], part: "allday", theme: "",
     name: "プラネタリウムカフェ", title: ["プラネタリウム", "カフェ"], english: "PLANETARIUM CAFÉ",
     catch: ["星空に包まれる、", "特別なカフェ。"],
     card: ["いつものカフェとはひと味違う、", "幻想的な空間でゆったりと。"],
@@ -32,7 +33,7 @@ window.KIKAKU = [
     status: "メニュー・価格を順次公開"
   },
   {
-    id: "tentoushiki", part: "night", theme: "is-night",
+    id: "tentoushiki", cats: ["watch", "night"], part: "night", theme: "is-night",
     name: "点灯式・イルミネーション", title: ["点灯式・", "イルミネーション"], english: "LIGHTING & ILLUMINATION",
     catch: ["冬の校舎を、", "光で彩る。"],
     card: ["17:15ごろの点灯式から、夜の部へ。", "きらめく光に包まれる、", "特別な空間へ。"],
@@ -45,7 +46,7 @@ window.KIKAKU = [
     status: "場所・観覧案内を順次公開"
   },
   {
-    id: "ennichi", part: "day", theme: "is-day",
+    id: "ennichi", cats: ["play"], part: "day", theme: "is-day",
     name: "縁日", title: ["縁日"], english: "FESTIVAL GAMES",
     catch: ["遊んで、笑って、", "お祭り気分。"],
     card: ["輪投げ・射的・恋おみくじ。", "友達同士でも、家族でも。"],
@@ -57,7 +58,7 @@ window.KIKAKU = [
     status: "参加費・参加方法を順次公開"
   },
   {
-    id: "shop", part: "allday", theme: "",
+    id: "shop", cats: ["eat", "buy"], part: "allday", theme: "",
     name: "模擬店・ワークショップ", title: ["模擬店・", "ワークショップ"], english: "FOOD & WORKSHOP",
     catch: ["食べて、つくって、", "持ち帰る。"],
     card: ["懐かしの人気給食メニューや焼きそば。", "世界にひとつの作品づくりも。"],
@@ -69,7 +70,7 @@ window.KIKAKU = [
     status: "出店・メニュー・価格を順次公開"
   },
   {
-    id: "stage", part: "allday", theme: "",
+    id: "stage", cats: ["watch"], part: "allday", theme: "",
     name: "ステージ", title: ["ステージ"], english: "STAGE",
     catch: ["この瞬間、この場所が、", "一番熱い。"],
     card: ["ダンス部やバンドが出演。", "出演者は決まり次第お知らせします。"],
