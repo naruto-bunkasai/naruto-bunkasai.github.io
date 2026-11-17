@@ -208,14 +208,14 @@
   .cats svg { width: 30px; height: 30px; margin-bottom: 6px; }
   .cats b { font-weight: 600; font-size: 17px; letter-spacing: .08em; }
   .cats small { font-size: 10.5px; color: var(--muted); }
-  .cats .go { margin-top: 6px; font-size: 11px; color: var(--red); }
+  .cats .go { margin-top: 4px; font-size: 9px; line-height: 1; color: var(--red); }
   @media (max-width: 560px) {
     .cats ul { gap: 6px; }
     .cats button { padding: 10px 2px 8px; border-radius: 10px; }
     .cats svg { width: 24px; height: 24px; }
     .cats b { font-size: 13px; letter-spacing: 0; }
     .cats small { font-size: 9.5px; }
-    .cats .go { font-size: 10px; }
+    .cats .go { font-size: 8px; }
   }
   .filter-state { text-align: center; margin: 10px 0 0; font-size: 13px; }
   .filter-state[hidden] { display: none; }
@@ -528,19 +528,19 @@
       <ul>
         <li><button type="button" data-cat="eat" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#C8323C" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M9 4v9a3 3 0 0 0 6 0V4M12 4v24M21 28V4c3 2 4 6 4 10h-4"/></svg>
-          <b>食べる</b><small>飲食・カフェ</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+          <b>食べる</b><small>飲食・カフェ</small><span class="go" aria-hidden="true">▼</span></button></li>
         <li><button type="button" data-cat="play" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#C9A227" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="7.5"/><circle cx="16" cy="16" r="3"/></svg>
-          <b>遊ぶ</b><small>縁日・体験</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+          <b>遊ぶ</b><small>縁日・体験</small><span class="go" aria-hidden="true">▼</span></button></li>
         <li><button type="button" data-cat="watch" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#14285A" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M13 23V6l10 3"/><circle cx="9.5" cy="23" r="3.5"/></svg>
-          <b>観る</b><small>ステージ・光</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+          <b>観る</b><small>ステージ・光</small><span class="go" aria-hidden="true">▼</span></button></li>
         <li><button type="button" data-cat="buy" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#3E8E86" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="20" height="21" rx="2"/><path d="M6 11h20M12 15a4 4 0 0 0 8 0"/></svg>
-          <b>買う</b><small>出店・作る</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+          <b>買う</b><small>出店・作る</small><span class="go" aria-hidden="true">▼</span></button></li>
         <li><button type="button" data-cat="night" aria-pressed="false">
           <svg viewBox="0 0 32 32" fill="none" stroke="#14285A" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M20 26A11 11 0 1 1 15 5a9 9 0 0 0 11 13 11 11 0 0 1-6 8z"/><path d="M24 5v4M22 7h4"/></svg>
-          <b>夜の企画</b><small>恐怖と光</small><span class="go" aria-hidden="true">見る ↓</span></button></li>
+          <b>夜の企画</b><small>恐怖と光</small><span class="go" aria-hidden="true">▼</span></button></li>
       </ul>
     </div>
   </section>
