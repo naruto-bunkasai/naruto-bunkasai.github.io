@@ -31,6 +31,7 @@
     - キービジュアルは背景・筆の跡・タイトルの3枚を重ね、読み込み時に動かす（2026-11-07）
     - 2026-11-17：企画カードの中身を assets/kikaku.js に移し、晴菜さんの企画ページの型（kikaku/）とつないだ。
       文言はチラシの完成版（11/16）にそろえ、ロゴ・問い合わせ・学生ボランティア募集・点灯式の時刻・交通案内・主催を足した（11/16の打ち合わせ）
+    - 2026-11-17（4回目）：車の入口は1か所だけ（11/16 佐藤さん）を「大切なお願い」と略図（assets/img/access-map.svg、tools/make_access_map.py で作る）で伝える
     - 2026-11-17（3回目）：ヘッダーを画面上に貼り付け、スマホでも「アクセス」を出す。会場名の下にアクセスへのリンク。共有の画像（ogp.jpg）。荒天の知らせ方。ボランティアは最新の申込フォームへ
     - 2026-11-17（2回目）：「楽しみ方から探す」で企画をしぼるボタン、地図の埋め込み、FAQを9問に、問い合わせを独立の節に。ロゴはドライブの最新版（11/16）
   */
@@ -339,7 +340,16 @@
   .access .how { margin: 18px 0 0; font-size: 13px; line-height: 1.9; }
   .access .how dt { display: inline-block; margin-top: 8px; background: var(--navy); color: #fff; font-size: 11px; padding: 0 10px; border-radius: 2px; }
   .access .how dd { margin: 4px 0 0; }
-  .access .mapbox { margin-top: 32px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; background: var(--mist); }
+  .access .car-note { margin-top: 22px; border: 2px solid var(--red); border-radius: 10px; background: #fff; padding: 16px 18px 12px; }
+  .access .car-note .h { margin: 0 0 6px; color: var(--red); font-weight: 700; font-size: 15px; }
+  .access .car-note ul { margin: 0; padding-left: 1.2em; font-size: 13.5px; line-height: 1.85; }
+  .access .car-note b { color: var(--red); }
+  .access .routemap { margin: 32px 0 0; }
+  .access .routemap img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+  .access .routemap figcaption { margin-top: 8px; font-size: 12.5px; color: var(--navy-soft); }
+  .access .routemap .k { display: inline-block; width: 1.4em; text-align: center; font-weight: 700; color: var(--red); }
+  .access .routemap .star { color: #C9A227; }
+  .access .mapbox { margin-top: 20px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; background: var(--mist); }
   .access .mapbox iframe { display: block; width: 100%; height: 100%; border: 0; }
   @media (max-width: 720px) { .access .mapbox { aspect-ratio: 4 / 3; } }
   @media (max-width: 720px) { .access .cols { grid-template-columns: 1fr; gap: 28px; } }
@@ -571,10 +581,20 @@
           <div class="place-label">会場</div>
           <p class="place">TODAベリーファーム</p>
           <address>旧北灘西小学校<br>鳴門市北灘町折野字屋敷64-3</address>
-          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=%E9%B3%B4%E9%96%80%E5%B8%82%E5%8C%97%E7%81%98%E7%94%BA%E6%8A%98%E9%87%8E%E5%AD%97%E5%B1%8B%E6%95%B764-3" target="_blank" rel="noopener">Googleマップで開く <span aria-hidden="true">↗</span></a>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=34.213667,134.481614" target="_blank" rel="noopener">車の入口をGoogleマップで開く <span aria-hidden="true">↗</span></a>
+          <div class="car-note" role="note" aria-labelledby="car-note-h">
+            <p class="h" id="car-note-h">お車でお越しの方へ（大切なお願い）</p>
+            <ul>
+              <li>会場への入口は<b>1か所だけ</b>です。国道11号の、県道41号との分かれ道（ヘアピンカーブ・下の地図の★）から入ってください。</li>
+              <li><b>国道11号から集落の細い道には入らないでください。</b>地域の方の生活道路で、車どうしがすれ違えません。</li>
+              <li>当日は分かれ道に、案内の看板やスタッフがいます。案内に従ってください。</li>
+              <li>カーナビやスマホの地図に住所を入れると、細い道を案内されることがあります。★の入口を目指してください。</li>
+              <li>お帰りの道は、決まり次第お知らせします。</li>
+            </ul>
+          </div>
           <dl class="how">
             <dt>お車で</dt>
-            <dd>鳴門ICから約30分／引田ICから約15分（国道11号経由）<br>JR鳴門駅から車で約20分</dd>
+            <dd>鳴門ICから約30分／引田ICから約15分（国道11号経由）<br>JR鳴門駅から車で約20分<br>入口は1か所だけです（下の「大切なお願い」と略図）</dd>
             <dt>バスで</dt>
             <dd>徳島バス引田線「鳴門駅前」から「北灘西小学校前」下車、徒歩約2分</dd>
           </dl>
@@ -587,8 +607,12 @@
           <tr><th scope="row">雨天</th><td>開催<small>荒天などで中止する場合は、公式Instagramでお知らせします</small></td></tr>
         </table>
       </div>
+      <figure class="routemap">
+        <img src="assets/img/access-map.svg" alt="会場までの略図。国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）の★からだけ会場へ入る。国道11号から集落へ入る細い道には×が付いている" width="1000" height="890" loading="lazy">
+        <figcaption><span class="k star">★</span>入口（この1か所だけ）　<span class="k x">×</span>入らないでください（集落の生活道路）　<span class="k dot">…</span>入口から会場へ</figcaption>
+      </figure>
       <div class="mapbox">
-        <iframe src="https://maps.google.com/maps?q=%E9%B3%B4%E9%96%80%E5%B8%82%E5%8C%97%E7%81%98%E7%94%BA%E6%8A%98%E9%87%8E%E5%AD%97%E5%B1%8B%E6%95%B764-3&amp;z=13&amp;output=embed" title="会場（TODAベリーファーム・旧北灘西小学校）の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://maps.google.com/maps?q=34.213667,134.481614&amp;z=15&amp;output=embed" title="車の入口（国道11号と県道41号の分かれ道）の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </section>
@@ -639,7 +663,7 @@
         </details>
         <details>
           <summary>車で行けますか？ 駐車場はありますか？</summary>
-          <div class="a"><p>会場に駐車場（約200台）があります。鳴門ICから約30分、引田ICから約15分（国道11号経由）です。</p></div>
+          <div class="a"><p>会場に駐車場（約200台）があります。鳴門ICから約30分、引田ICから約15分（国道11号経由）です。入口は国道11号と県道41号の分かれ道（ヘアピンカーブ）の1か所だけで、集落の細い道には入れません。<a href="#access">会場・アクセスの略図</a>をご覧ください。</p></div>
         </details>
         <details>
           <summary>電車やバスで行けますか？</summary>
