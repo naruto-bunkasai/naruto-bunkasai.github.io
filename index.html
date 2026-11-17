@@ -10,6 +10,13 @@
 <meta property="og:title" content="鳴門文化祭 -Berry happy-">
 <meta property="og:description" content="2026年12月5日（土）TODAベリーファーム（旧北灘西小学校）で開催。入場無料。">
 <meta property="og:url" content="https://naruto-bunkasai.github.io/">
+<meta property="og:image" content="https://naruto-bunkasai.github.io/assets/img/ogp.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="鳴門文化祭 -Berry happy- 2026.12.5（土）TODAベリーファーム">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="鳴門文化祭">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14285A">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 58C18 50 8 38 10 26c1-8 9-12 22-12s21 4 22 12c2 12-8 24-22 32z' fill='%23C8323C'/%3E%3Cpath d='M20 16c4-6 8-6 12-2 4-4 8-4 12 2-6 3-18 3-24 0z' fill='%235E9B4F'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +31,7 @@
     - キービジュアルは背景・筆の跡・タイトルの3枚を重ね、読み込み時に動かす（2026-11-07）
     - 2026-11-17：企画カードの中身を assets/kikaku.js に移し、晴菜さんの企画ページの型（kikaku/）とつないだ。
       文言はチラシの完成版（11/16）にそろえ、ロゴ・問い合わせ・学生ボランティア募集・点灯式の時刻・交通案内・主催を足した（11/16の打ち合わせ）
+    - 2026-11-17（3回目）：ヘッダーを画面上に貼り付け、スマホでも「アクセス」を出す。会場名の下にアクセスへのリンク。共有の画像（ogp.jpg）。荒天の知らせ方。ボランティアは最新の申込フォームへ
     - 2026-11-17（2回目）：「楽しみ方から探す」で企画をしぼるボタン、地図の埋め込み、FAQを9問に、問い合わせを独立の節に。ロゴはドライブの最新版（11/16）
   */
   :root {
@@ -81,7 +89,10 @@
   }
 
   /* ヘッダー */
-  .site-header { background: var(--cream); }
+  /* ヘッダーは画面の上に貼り付ける。スマホでも「アクセス」「最新情報」を文字のボタンで出す（2026-11-17、案1） */
+  .site-header { position: sticky; top: 0; z-index: 30; background: rgba(253,251,244,.96); backdrop-filter: blur(6px); border-bottom: 1px solid rgba(20,40,90,.08); }
+  section[id] { scroll-margin-top: 64px; }
+  .gnav .pill-line { display: none; border: 1px solid var(--navy); padding: 5px 14px; border-radius: 999px; font-weight: 600; }
   .site-header .wrap {
     display: flex; align-items: center; justify-content: space-between;
     height: 64px;
@@ -95,8 +106,11 @@
     padding: 6px 18px; border-radius: 999px; font-weight: 600;
   }
   @media (max-width: 640px) {
+    .gnav { gap: 8px; font-size: 12.5px; }
     .gnav .text-link { display: none; }
-    .logo img { height: 38px; }
+    .gnav .pill-line { display: block; }
+    .gnav .pill { padding: 6px 14px; }
+    .logo img { height: 36px; }
   }
 
   /* キービジュアル */
@@ -166,6 +180,7 @@
   .date .dow { font-size: 14px; }
   .date .time { font-family: var(--latin); font-size: 15px; margin-left: 8px; }
   .venue { text-align: center; font-weight: 600; font-size: 15px; line-height: 1.6; }
+  .venue .to-access { display: block; margin-top: 4px; font-size: 12.5px; font-weight: 500; color: var(--red); text-underline-offset: 4px; }
   .fee { text-align: right; }
   .fee strong { display: block; color: var(--red); font-weight: 600; font-size: 16px; }
   .fee small { font-size: 11px; color: var(--muted); }
@@ -470,6 +485,7 @@
     <nav class="gnav" aria-label="ページ内の移動">
       <a class="text-link" href="#pickup">企画紹介</a>
       <a class="text-link" href="#access">会場・アクセス</a>
+      <a class="pill-line" href="#access">アクセス</a>
       <a class="pill" href="#news">最新情報↗</a>
     </nav>
   </div>
@@ -490,7 +506,7 @@
   <section class="info-bar" id="info" aria-label="開催の概要">
     <div class="wrap">
       <p class="date"><span class="y">2026</span><span class="md">12.5</span><span class="dow">土</span><span class="time">10:00–19:00</span></p>
-      <p class="venue">TODAベリーファーム<br>旧北灘西小学校</p>
+      <p class="venue">TODAベリーファーム<br>旧北灘西小学校<a class="to-access" href="#access">地図・アクセスを見る ›</a></p>
       <p class="fee"><strong>入場無料</strong><small>飲食・一部企画は有料</small></p>
       <p class="countdown" id="countdown" hidden>開催まで あと<b id="days">0</b>日</p>
     </div>
@@ -568,7 +584,7 @@
           <tr><th scope="row">開催日時</th><td>2026年12月5日（土）<br>10:00〜19:00</td></tr>
           <tr><th scope="row">入場料</th><td>無料<small>飲食・一部企画は有料</small></td></tr>
           <tr><th scope="row">駐車場</th><td>約200台</td></tr>
-          <tr><th scope="row">雨天</th><td>開催</td></tr>
+          <tr><th scope="row">雨天</th><td>開催<small>荒天などで中止する場合は、公式Instagramでお知らせします</small></td></tr>
         </table>
       </div>
       <div class="mapbox">
@@ -585,11 +601,11 @@
         <span class="due">締切 11月21日（土）</span>
       </div>
       <ul>
-        <li>カフェ・お化け屋敷・縁日などの準備や、当日の運営のお手伝い</li>
-        <li>事前準備だけ、当日だけの参加も歓迎</li>
+        <li>高校生・大学生が対象。会場装飾、お化け屋敷のスタッフやお化け役、縁日・カフェの準備など</li>
+        <li>事前準備（15時以降。学校終わりもOK）だけ、当日だけの参加も歓迎</li>
         <li>昼食付き・ボランティア証明書を発行（交通費の支給はありません）</li>
       </ul>
-      <a class="btn" href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">Instagramから申し込む <span aria-hidden="true">↗</span></a>
+      <a class="btn" href="https://forms.gle/44nThaM8i23sspKo6" target="_blank" rel="noopener">申込フォームへ <span aria-hidden="true">↗</span></a>
     </div>
   </section>
 
@@ -619,7 +635,7 @@
         </details>
         <details>
           <summary>雨の日でも開催しますか？</summary>
-          <div class="a"><p>雨天でも開催します。</p></div>
+          <div class="a"><p>雨天でも開催します。荒天などで中止する場合は、<a href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">公式Instagram</a>でお知らせします。</p></div>
         </details>
         <details>
           <summary>車で行けますか？ 駐車場はありますか？</summary>
@@ -639,7 +655,7 @@
         </details>
         <details data-volunteer>
           <summary>ボランティアとして参加できますか？</summary>
-          <div class="a"><p>学生ボランティアを11月21日（土）まで募集しています。<a href="#volunteer">学生ボランティア募集</a>をご覧ください。</p></div>
+          <div class="a"><p>学生ボランティアを11月21日（土）まで募集しています。<a href="https://forms.gle/44nThaM8i23sspKo6" target="_blank" rel="noopener">申込フォーム</a>からお申し込みください。</p></div>
         </details>
         <details>
           <summary>問い合わせはどこにすればよいですか？</summary>

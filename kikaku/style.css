@@ -129,3 +129,9 @@ figcaption { text-align: right; margin-top: 7px; color: #5e6982; font-size: 11px
 @media (max-width:620px) { .wordmark img { height: 40px; } }
 /* 主催・企画運営（チラシの完成版と同じ書き方） */
 .site-footer .org { display: block; margin-top: 18px; font-size: 11px; line-height: 2; opacity: .85; }
+
+/* ヘッダーを画面の上に貼り付け、スマホでも「アクセス」を文字のボタンで出す（2026-11-17） */
+.site-header { position: sticky; top: 0; z-index: 30; background: rgba(253,251,244,.96); backdrop-filter: blur(6px); }
+.nav-line { display: none; text-decoration: none; border: 1px solid var(--ink); border-radius: 99px; padding: 7px 14px; font-size: 12px; }
+@media (max-width:850px) { .nav-line { display: block; } }
+@media (max-width:620px) { .site-header nav { gap: 8px; } .nav-pill { gap: 8px; } }
