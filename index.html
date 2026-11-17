@@ -912,6 +912,14 @@
   })();
 </script>
 <!-- アクセス解析：Cloudflare Web Analytics（Cookieを使わない。サイト naruto-bunkasai.github.io、2026-11-17登録） -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "37c362f5c2854128810d40542394ef0d"}'></script>
+<!-- 本番のURLで開いたときだけ読み込む（確認用URLでの確認は数えない） -->
+<script>
+  if (location.hostname === "naruto-bunkasai.github.io") {
+    const s = document.createElement("script");
+    s.defer = true; s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    s.setAttribute("data-cf-beacon", '{"token": "37c362f5c2854128810d40542394ef0d"}');
+    document.body.appendChild(s);
+  }
+</script>
 </body>
 </html>
