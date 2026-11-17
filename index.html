@@ -24,7 +24,7 @@
     - キービジュアルは背景・筆の跡・タイトルの3枚を重ね、読み込み時に動かす（2026-11-07）
     - 2026-11-17：企画カードの中身を assets/kikaku.js に移し、晴菜さんの企画ページの型（kikaku/）とつないだ。
       文言はチラシの完成版（11/16）にそろえ、ロゴ・問い合わせ・学生ボランティア募集・点灯式の時刻・交通案内・主催を足した（11/16の打ち合わせ）
-    - 2026-11-17（2回目）：ページ内の移動（画面上に貼り付くタブ）、「楽しみ方から探す」で企画をしぼるボタン、地図の埋め込み、FAQを9問に、問い合わせを独立の節に。ロゴはドライブの最新版（11/16）
+    - 2026-11-17（2回目）：「楽しみ方から探す」で企画をしぼるボタン、地図の埋め込み、FAQを9問に、問い合わせを独立の節に。ロゴはドライブの最新版（11/16）
   */
   :root {
     --navy: #14285A;
@@ -174,18 +174,6 @@
     .date { justify-content: center; flex-wrap: wrap; }
     .fee { text-align: center; }
   }
-
-  /* ページ内の移動（画面の上に貼り付く）。今いる節に色が付く */
-  .secnav { position: sticky; top: 0; z-index: 20; background: rgba(253,251,244,.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
-  .secnav ul { list-style: none; margin: 0 auto; padding: 10px 20px; max-width: 1120px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-  .secnav ul::-webkit-scrollbar { display: none; }
-  .secnav a {
-    display: block; white-space: nowrap; text-decoration: none; font-size: 13px; font-weight: 600;
-    padding: 7px 16px; border: 1px solid var(--navy); border-radius: 999px; background: #fff;
-  }
-  .secnav a:hover, .secnav a.is-current { background: var(--navy); color: #fff; }
-  .secnav li[hidden] { display: none; }
-  [id] { scroll-margin-top: 64px; }
 
   /* 楽しみ方から探す：押すと、おすすめの企画をその楽しみ方の企画だけにしぼる */
   .cats { padding: 36px 0 4px; }
@@ -508,17 +496,6 @@
     </div>
   </section>
 
-  <nav class="secnav" aria-label="このページの内容">
-    <ul>
-      <li><a href="#pickup">おすすめの企画</a></li>
-      <li><a href="#schedule">スケジュール</a></li>
-      <li><a href="#access">会場・アクセス</a></li>
-      <li data-volunteer><a href="#volunteer">ボランティア募集</a></li>
-      <li><a href="#faq">よくある質問</a></li>
-      <li><a href="#contact">お問い合わせ</a></li>
-    </ul>
-  </nav>
-
   <section class="cats" aria-label="楽しみ方から探す">
     <div class="wrap">
       <p class="lead">楽しみ方から探す<small>押すと、下の「おすすめの企画」がその企画だけになります</small></p>
@@ -820,20 +797,6 @@
     document.getElementById("volunteer").hidden = true;
     document.querySelectorAll("[data-volunteer]").forEach(el => el.hidden = true);
   }
-
-  // ===== ページ内の移動：今いる節のタブに色を付ける =====
-  (function () {
-    const links = [...document.querySelectorAll(".secnav a")];
-    const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
-    if (!("IntersectionObserver" in window)) return;
-    const io = new IntersectionObserver(entries => entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      links.forEach(a => a.classList.remove("is-current"));
-      const a = map.get(e.target.id);
-      if (a) { a.classList.add("is-current"); a.scrollIntoView({ block: "nearest", inline: "nearest" }); }
-    }), { rootMargin: "-45% 0px -50% 0px" });
-    map.forEach((a, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
-  })();
 
   // ===== 7. 本番までの日数（日本時間で数える。当日は「本日開催」、終わったら出さない） =====
   (function () {
