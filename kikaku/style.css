@@ -51,6 +51,9 @@ figcaption { text-align: right; margin-top: 7px; color: #5e6982; font-size: 11px
 .information dd { margin: 0; }
 .pending { color: #65718b; font-size: 12px; }
 .fee-note { font-size: 11px; margin-top: 12px; line-height: 1.8; }
+.caution { margin-top: 14px; padding: 11px 14px; border-left: 3px solid #C8323C; background: #ffffff8c; font-size: 12px; line-height: 1.8; }
+.caution-h { font-weight: 700; color: #C8323C; margin-bottom: 2px; }
+.caution[hidden] { display: none; }
 .coming { padding: 31px 35px 25px; background: #e9ebf2; }
 .coming .eyebrow { margin-bottom: 10px; }
 .coming-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 35px; }

@@ -36,6 +36,10 @@
     image.src = IMG(key);
     image.alt = program.alt;
 
+    const caution = document.getElementById("program-caution");
+    caution.hidden = !program.caution;
+    if (program.caution) lines("program-caution-text", program.caution, "br");
+
     const information = document.getElementById("program-information");
     information.replaceChildren();
     for (const name of program.rows) {
