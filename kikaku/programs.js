@@ -23,6 +23,9 @@
     page.className = program.theme;
     page.style.setProperty("--image-position", program.position);
     document.title = program.name + "｜鳴門文化祭";
+    // 検索向け（2026-11-19）：企画ごとの正規のURLと説明文。pages.dev の写しで開かれても github.io を正規とする
+    document.querySelector('link[rel="canonical"]').href = "https://naruto-bunkasai.github.io/kikaku/?program=" + key;
+    document.querySelector('meta[name="description"]').content = program.name + "｜" + program.description + "（鳴門文化祭 -Berry happy-。2026年12月5日（土）、鳴門市北灘町のTODAベリーファームで開催）";
     text("breadcrumb-title", program.name);
     text("program-english", program.english);
     text("program-tag", PART[program.part] || "");
