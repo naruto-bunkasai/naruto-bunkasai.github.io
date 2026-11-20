@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.documentElement.classList.add("js");</script>
 <title>鳴門文化祭 -Berry happy- | 2026.12.5（土）鳴門市北灘・TODAベリーファーム</title>
-<meta name="description" content="鳴門市主催の文化祭「鳴門文化祭 -Berry happy-」。2026年12月5日（土）10:00〜19:00、鳴門市北灘町のTODAベリーファーム（旧北灘西小学校）で開催。昼は縁日、夜はお化け屋敷とイルミネーション。入場無料。">
+<meta name="description" content="鳴門市主催の文化祭「鳴門文化祭 -Berry happy-」。2026年12月5日（土）10:00〜19:00、鳴門市北灘町のTODAベリーファーム（旧北灘西小学校）で開催。昼は縁日、お化け屋敷は10:30から（17:00からは怖さ10倍）、夜はイルミネーション。入場無料。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="鳴門文化祭 -Berry happy-">
 <meta property="og:description" content="2026年12月5日（土）TODAベリーファーム（旧北灘西小学校）で開催。入場無料。">
@@ -490,13 +490,14 @@
 <!--
   検索向けの情報（2026-11-19）。正規のURLは github.io（Cloudflareの naruto-bunkasai.pages.dev は同じ中身の写しなので、上の canonical で github.io に寄せる）。
   下はイベントの構造化データ（schema.org の Event）。日時・会場・料金を変えたら、ここも直す。確かめ方：https://search.google.com/test/rich-results
+  2026-11-20：Search Consoleの「改善できるアイテム」を受けて、offers.validFrom（HPの本番公開日 11/18）と主催の鳴門市の url を足した。performer（出演者）は決まってから足す
 -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Event",
   "name": "鳴門文化祭 -Berry happy-",
-  "description": "鳴門市主催の文化祭。昼は縁日や模擬店、夜はお化け屋敷とイルミネーション。入場無料（飲食・一部企画は有料）。",
+  "description": "鳴門市主催の文化祭。昼は縁日や模擬店、10:30からお化け屋敷（17:00からは怖さ10倍）、夜はイルミネーション。入場無料（飲食・一部企画は有料）。",
   "startDate": "2026-12-05T10:00:00+09:00",
   "endDate": "2026-12-05T19:00:00+09:00",
   "eventStatus": "https://schema.org/EventScheduled",
@@ -521,10 +522,11 @@
     "price": "0",
     "priceCurrency": "JPY",
     "availability": "https://schema.org/InStock",
+    "validFrom": "2026-11-18T00:00:00+09:00",
     "url": "https://naruto-bunkasai.github.io/"
   },
   "organizer": [
-    { "@type": "GovernmentOrganization", "name": "鳴門市" },
+    { "@type": "GovernmentOrganization", "name": "鳴門市", "url": "https://www.city.naruto.lg.jp/" },
     { "@type": "Organization", "name": "鳴門文化祭実行委員会", "url": "https://naruto-bunkasai.github.io/", "sameAs": ["https://www.instagram.com/naruto_bunkasai/"] }
   ]
 }
@@ -718,7 +720,7 @@
         </details>
         <details>
           <summary>お化け屋敷はいくらですか？ 何時からですか？</summary>
-          <div class="a"><p>参加費は200円です。17:00から、幼稚園舎で開きます。</p></div>
+          <div class="a"><p>参加費は200円です。10:30から19:00まで、幼稚園舎で開きます。17:00からの2時間は「怖さ10倍！」です。</p></div>
         </details>
         <details>
           <summary>各企画の時間やステージのタイムテーブルは？</summary>
