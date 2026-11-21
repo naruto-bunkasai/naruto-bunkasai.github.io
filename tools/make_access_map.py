@@ -2,7 +2,8 @@
 
 2026-11-17。11/16に地元の佐藤さんと確かめた「国道11号から会場への入口は、県道41号との分かれ道（ヘアピンカーブ）の1か所だけ。
 集落の細い道には入らない」を伝えるための図。道の形は tools/access-map-osm.json（Overpass APIで取ったもの）。
-帰りの道は11/19の警備の打ち合わせの後に足す。
+2026-11-21：帰りの道（紫の線）を足した。11/19の警備（アリス警備さん）の打ち合わせで、お寺の駐車場に停めた人以外は全員、
+会場の北から東を回って県道41号へ出る（莉奈さん 11/19 18:31「学校周りを一周回って同じルート」と、警備員の配置図から読んだ。莉奈さんに確認中）。
 
     python -X utf8 tools/make_access_map.py
 """
@@ -52,7 +53,7 @@ for e in small:
 NAVY, RED, GRAY = "#14285A", "#C8323C", "#5E6478"
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">',
        '<title id="t">会場までの略図</title>',
-       '<desc id="d">国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。国道11号から集落の細い道には入らない。</desc>',
+       '<desc id="d">国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。国道11号から集落の細い道には入らない。帰りは会場の北から東を回って県道41号へ出て、大麻方面は南へ、鳴門・引田方面は分かれ道へ戻って国道11号へ。</desc>',
        f'<rect width="{W}" height="{H}" fill="#FDFBF4"/>',
        '<g fill="none" stroke-linecap="round" stroke-linejoin="round">']
 for e in river: out.append(f'<path d="{path(e["geometry"])}" stroke="#A9D3EE" stroke-width="5"/>')
@@ -91,9 +92,10 @@ def label(x, y, text, size=30, fill=NAVY, anchor="start", halo=True):
 # 会場の名前
 sx = sum(xy(p["lat"], p["lon"])[0] for p in school["geometry"]) / len(school["geometry"])
 sy = sum(xy(p["lat"], p["lon"])[1] for p in school["geometry"]) / len(school["geometry"])
-label(sx + 120, sy - 10, "会場", 40, RED)
-label(sx + 120, sy + 28, "TODAベリーファーム", 24, NAVY)
-label(sx + 120, sy + 58, "（旧北灘西小学校）", 24, NAVY)
+# 2026-11-21：帰り道（紫）と重ならないよう、「会場」は建物の上に、名前は右下の空いた所に置く
+label(sx, sy + 12, "会場", 34, RED, "middle")
+label(640, 742, "会場：TODAベリーファーム", 22, NAVY)
+label(640, 772, "（旧北灘西小学校）", 22, NAVY)
 # 入口
 # 文字の★は地図の★と形も色も違って見えるので使わない。引き出し線で★につなぐ
 lx, ly = jx - 75, jy - 120                         # 海側の空いている所（左上）に置く
@@ -105,6 +107,38 @@ label(W - 20, 128, "鳴門方面 →", 28, NAVY, "end")
 label(20, H - 40, "← 引田方面", 28, NAVY)
 label(xy(34.2101, 134.4836)[0] + 22, H - 40, "県道41号 ↓ 大麻方面", 26, GRAY)
 label(xy(34.2176, 134.4838)[0] - 10, xy(34.2176, 134.4838)[1] + 5, "国道11号", 28, NAVY, "end")
+# 帰りの道（紫）。会場の北（入口からの道の終わり）→東の道を南へ→県道41号に出る→大麻方面は南へ、鳴門・引田方面は分かれ道へ戻って国道11号へ
+PURPLE = "#6B48B3"
+W_ = {e["id"]: e for e in els}
+def chain(ids):
+    pts = []
+    for i in ids:
+        g = [(p["lat"], p["lon"]) for p in W_[i]["geometry"]]
+        if pts:
+            d0 = (g[0][0]-pts[-1][0])**2 + (g[0][1]-pts[-1][1])**2
+            d1 = (g[-1][0]-pts[-1][0])**2 + (g[-1][1]-pts[-1][1])**2
+            if d1 < d0: g.reverse()
+        pts += g
+    return pts
+loop = chain([181040724, 181040956, 181040916, 181041015, 181040900])
+p41 = [(p["lat"], p["lon"]) for p in W_[675645609]["geometry"]]
+k = min(range(len(p41)), key=lambda i: (p41[i][0]-loop[-1][0])**2 + (p41[i][1]-loop[-1][1])**2)
+to_j = p41[k:]                       # 県道41号を分かれ道（入口）へ戻る
+to_south = list(reversed(p41[k-5:k+1]))   # 大麻方面へ
+def pp(pts): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in (xy(a, b) for a, b in pts))
+out.append(f'<defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10Z" fill="{PURPLE}"/></marker></defs>')
+for seg in (loop, to_j, to_south):
+    out.append(f'<path d="{pp(seg)}" fill="none" stroke="#FDFBF4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>')
+for seg in (loop, to_j, to_south):
+    out.append(f'<path d="{pp(seg)}" fill="none" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah)"/>')
+mx, my = xy(*loop[len(loop)//2])
+label(mx + 24, my, "帰り道", 30, PURPLE)
+label(mx + 24, my + 32, "（会場の東を回る）", 22, PURPLE)
+label(545, 592, "鳴門・引田方面は", 20, PURPLE, "end")
+label(545, 618, "入口の分かれ道へ戻り", 20, PURPLE, "end")
+label(545, 644, "国道11号へ", 20, PURPLE, "end")
+sx0, sy0 = xy(*loop[0])
+label(sx0 - 8, sy0 - 12, "駐車場から", 20, PURPLE, "end")
 # 方位と出典
 out.append(f'<g transform="translate(60,70)"><path d="M0,-34 L12,6 L0,0 L-12,6Z" fill="{NAVY}"/><text y="34" font-size="22" text-anchor="middle" fill="{NAVY}" {T}>N</text></g>')
 label(W - 14, H - 12, "地図データ © OpenStreetMap contributors", 15, GRAY, "end")
