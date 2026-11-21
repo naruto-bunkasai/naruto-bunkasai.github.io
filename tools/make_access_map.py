@@ -7,6 +7,7 @@
 2026-11-21：1枚に行きと帰りを重ねると、混ざって見える・★に線が集まって事故のように見える・国道11号の上で線が重なる（本人）ので、
 行きと帰りを別の図にし、HPではタブで切り替える。
 - 行き：国道11号の両方向から★（入口）まで赤の点線、★で折り返して入口からの道を駐車場（P）まで。集落の細い道には×（交差点の上ではなく、細い道を少し入った所）
+- 2026-11-21：行きの図からも★を外した。★が分かれ道（ヘアピンカーブ）の形を隠してしまう（本人）。入口は引き出し線と「入口はここだけ」で示す
 - 帰り：駐車場から会場の東を回って県道41号へ（紫）。大麻方面は南へ、鳴門・引田方面は分かれ道から国道11号へ。★は描かない（線が★に集まって見えないように）
 
     python -X utf8 tools/make_access_map.py
@@ -128,7 +129,7 @@ def build(mode):
         s = f'<text x="{x:.0f}" y="{y:.0f}" font-size="{size}" fill="{fill}" text-anchor="{anchor}" {T}'
         out.append(s + (f' stroke="{CREAM}" stroke-width="8" paint-order="stroke">' if halo else ">") + f"{text}</text>")
     title = "会場までの略図（行き）" if go else "会場からの略図（帰り）"
-    desc = ("国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）の★からだけ会場へ入る。鳴門方面から来たら★で折り返し、入口からの道を上って駐車場（P）へ。国道11号から集落の細い道（×）には入らない。"
+    desc = ("国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。鳴門方面から来たら分かれ道で折り返し、入口からの道を上って駐車場（P）へ。国道11号から集落の細い道（×）には入らない。"
             if go else
             "お寺の駐車場に停めた方以外は、駐車場（P）から会場の北と東を回って県道41号へ出る。大麻方面はそのまま県道41号を南へ、鳴門方面・引田方面は県道41号を分かれ道まで戻り、国道11号へ。")
     out += [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">',
@@ -162,7 +163,6 @@ def build(mode):
             r = 13
             for col, w_ in (("#fff", 12), (RED, 6)):
                 out.append(f'<g stroke="{col}" stroke-width="{w_}" stroke-linecap="round"><path d="M{x-r:.1f},{y-r:.1f}L{x+r:.1f},{y+r:.1f}M{x+r:.1f},{y-r:.1f}L{x-r:.1f},{y+r:.1f}"/></g>')
-        out.append(f'<polygon points="{star(jx, jy, 30, 13)}" fill="#F3D774" stroke="{RED}" stroke-width="4"/>')
     else:
         # 帰り：駐車場→県道41号→（南へ）／（分かれ道から国道11号の両方向へ）。★は描かず、分かれ道を通り抜ける1本の線にする
         segs = [loop, to_south] + [to_j + within(Bo, 1, 170) for Bo in TRUNK_OUT]
@@ -184,11 +184,11 @@ def build(mode):
     label(640, 772, "（旧北灘西小学校）", 22, NAVY)
 
     if go:
-        # 入口（引き出し線で★につなぐ。文字の★は地図の★と形も色も違って見えるので使わない）
-        lx, ly = jx - 75, jy - 120
-        out.append(f'<path d="M{jx-4:.0f},{jy-34:.0f} L{lx+6:.0f},{ly+48:.0f}" stroke="{RED}" stroke-width="3" fill="none"/>')
-        label(lx + 10, ly + 4, "入口はここだけ", 32, RED, "end")
-        label(lx + 10, ly + 40, "（ヘアピンカーブ）", 24, RED, "end")
+        # 入口（★は分かれ道の形を隠すので置かず、引き出し線を分かれ道のすぐ手前まで伸ばす）
+        # 引き出し線は、国道11号（右上へ）と海側の細い道（左上へ）の間をほぼ真上へ通す（海側の道の×と重ならないように）
+        out.append(f'<path d="M{jx-5:.0f},{jy-14:.0f} L{jx-26:.0f},{jy-96:.0f}" stroke="{RED}" stroke-width="3" fill="none"/>')
+        label(jx - 20, jy - 140, "入口はここだけ", 32, RED, "end")
+        label(jx - 20, jy - 106, "（ヘアピンカーブ）", 24, RED, "end")
         label(545, 398, "行き", 26, RED)
     else:
         mx, my = loop[len(loop)//2]

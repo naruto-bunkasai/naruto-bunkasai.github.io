@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 890" role="img" aria-labelledby="t d">
 <title id="t">会場までの略図（行き）</title>
-<desc id="d">国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）の★からだけ会場へ入る。鳴門方面から来たら★で折り返し、入口からの道を上って駐車場（P）へ。国道11号から集落の細い道（×）には入らない。</desc>
+<desc id="d">国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。鳴門方面から来たら分かれ道で折り返し、入口からの道を上って駐車場（P）へ。国道11号から集落の細い道（×）には入らない。</desc>
 <rect width="1000" height="890" fill="#FDFBF4"/>
 <defs><marker id="ahr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#C8323C"/></marker><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#6B48B3"/></marker></defs>
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -81,16 +81,15 @@
 <g stroke="#C8323C" stroke-width="6" stroke-linecap="round"><path d="M249.7,591.4L275.7,617.4M275.7,591.4L249.7,617.4"/></g>
 <g stroke="#fff" stroke-width="12" stroke-linecap="round"><path d="M750.4,90.3L776.4,116.3M776.4,90.3L750.4,116.3"/></g>
 <g stroke="#C8323C" stroke-width="6" stroke-linecap="round"><path d="M750.4,90.3L776.4,116.3M776.4,90.3L750.4,116.3"/></g>
-<polygon points="448.5,475.3 456.1,494.7 477.0,496.0 460.9,509.3 466.1,529.5 448.5,518.3 430.9,529.5 436.1,509.3 420.0,496.0 440.9,494.7" fill="#F3D774" stroke="#C8323C" stroke-width="4"/>
 <circle cx="616.2" cy="338.2" r="19" fill="#14285A" stroke="#FDFBF4" stroke-width="4"/>
 <text x="616.2" y="346.2" font-size="24" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">P</text>
 <text x="616" y="308" font-size="22" fill="#14285A" text-anchor="middle" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">駐車場</text>
 <text x="533" y="492" font-size="34" fill="#C8323C" text-anchor="middle" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">会場</text>
 <text x="640" y="742" font-size="22" fill="#14285A" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">会場：TODAベリーファーム</text>
 <text x="640" y="772" font-size="22" fill="#14285A" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">（旧北灘西小学校）</text>
-<path d="M445,471 L380,433" stroke="#C8323C" stroke-width="3" fill="none"/>
-<text x="384" y="389" font-size="32" fill="#C8323C" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">入口はここだけ</text>
-<text x="384" y="425" font-size="24" fill="#C8323C" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">（ヘアピンカーブ）</text>
+<path d="M444,491 L423,409" stroke="#C8323C" stroke-width="3" fill="none"/>
+<text x="429" y="365" font-size="32" fill="#C8323C" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">入口はここだけ</text>
+<text x="429" y="399" font-size="24" fill="#C8323C" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">（ヘアピンカーブ）</text>
 <text x="545" y="398" font-size="26" fill="#C8323C" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">行き</text>
 <text x="980" y="128" font-size="28" fill="#14285A" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">鳴門方面 →</text>
 <text x="20" y="850" font-size="28" fill="#14285A" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">← 引田方面</text>
