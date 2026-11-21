@@ -354,6 +354,18 @@
   @media (max-width: 720px) { .access .mapbox { aspect-ratio: 4 / 3; } }
   @media (max-width: 720px) { .access .cols { grid-template-columns: 1fr; gap: 28px; } }
   /* 2026-11-21：PCで略図が大きすぎて一度に見えなかった（本人）。PCでは略図とGoogleマップを横に並べ、スマホでは縦に積む */
+  /* 略図の行き・帰りのタブ（2026-11-21） */
+  .access .route-tabs { display: none; gap: 8px; margin-bottom: 10px; }
+  .js .access .route-tabs { display: flex; }
+  .access .route-tabs button { flex: 1; padding: 10px 0; font: inherit; font-size: 15px; font-weight: 700; letter-spacing: .1em; border: 2px solid var(--navy); border-radius: 999px; background: #fff; color: var(--navy); cursor: pointer; }
+  .access .route-tabs button[aria-selected="true"] { background: var(--navy); color: #fff; }
+  .access .route-tabs #route-tab-go[aria-selected="true"] { background: var(--red); border-color: var(--red); }
+  .access .route-tabs #route-tab-back[aria-selected="true"] { background: #6B48B3; border-color: #6B48B3; }
+  .access .route-tabs button:focus-visible { outline: 3px solid var(--day); outline-offset: 2px; }
+  .access .route-panel + .route-panel { margin-top: 20px; }
+  .js .access .route-panel { display: none; margin-top: 0; }
+  .js .access .route-panel.is-active { display: block; }
+  .access .routemap .cap { margin: 8px 0 0; font-size: 12.5px; color: var(--navy-soft); }
   .access .maps { margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
   .access .maps .routemap { margin: 0; }
   .access .maps .mapbox { margin-top: 0; aspect-ratio: 1000 / 890; }
@@ -639,7 +651,7 @@
               <li><b>国道11号から集落の細い道には入らないでください。</b>地域の方の生活道路で、車どうしがすれ違えません。</li>
               <li>当日は分かれ道に、案内の看板やスタッフがいます。案内に従ってください。</li>
               <li>カーナビやスマホの地図に住所を入れると、細い道を案内されることがあります。略図の<svg class="ico-star" viewBox="-16 -16 32 32" aria-hidden="true"><polygon points="0.0,-14.0 3.5,-4.9 13.3,-4.3 5.7,1.9 8.2,11.3 0.0,6.0 -8.2,11.3 -5.7,1.9 -13.3,-4.3 -3.5,-4.9" fill="#F3D774" stroke="#C8323C" stroke-width="2.2"/></svg>の入口を目指してください。</li>
-              <li>お帰りは、お寺の駐車場に停めた方以外、<b>会場の東を回って県道41号へ出ます</b>（略図の紫の線）。下の「お帰り」もご覧ください。</li>
+              <li>お帰りは、お寺の駐車場に停めた方以外、<b>会場の東を回って県道41号へ出ます</b>（略図の「帰り」）。下の「お帰り」もご覧ください。</li>
             </ul>
           </div>
           <dl class="how">
@@ -650,7 +662,7 @@
             <dt>駐車場</dt>
             <dd>グラウンド駐車場（約80台）・臨時駐車場（約24台）<br>いっぱいのときは、お寺の臨時駐車場（約30台）<br>当日は9:30〜19:30、警備員が誘導します。案内に従って停めてください<br>自転車の方は、駐輪場をご利用ください</dd>
             <dt>お帰り</dt>
-            <dd>お寺の駐車場に停めた方以外は、会場の北から東を回って県道41号へ出ます（略図の紫の線）<br>大麻方面は、そのまま県道41号を南へ<br>鳴門方面・引田方面は、県道41号を入口の分かれ道まで戻り、国道11号へ<br>夜は暗くなります。足もとと、歩いている方に気をつけてお帰りください</dd>
+            <dd>お寺の駐車場に停めた方以外は、会場の北から東を回って県道41号へ出ます（略図の「帰り」）<br>大麻方面は、そのまま県道41号を南へ<br>鳴門方面・引田方面は、県道41号を入口の分かれ道まで戻り、国道11号へ<br>夜は暗くなります。足もとと、歩いている方に気をつけてお帰りください</dd>
           </dl>
           <p class="note">館内の案内図は順次掲載します。</p>
         </div>
@@ -663,8 +675,19 @@
       </div>
       <div class="maps">
       <figure class="routemap">
-        <img src="assets/img/access-map.svg" alt="会場までの略図。国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）の★からだけ会場へ入る。国道11号から集落へ入る細い道には×が付いている。行きは国道11号から★の分かれ道で折り返し、赤い点線で駐車場（P）へ。帰りは紫の線で、駐車場から会場の東を回って県道41号へ出て、大麻方面は南へ、鳴門・引田方面は入口の分かれ道から国道11号へ" width="1000" height="890" loading="lazy">
-        <figcaption><span class="k"><svg class="ico-star" viewBox="-16 -16 32 32" aria-hidden="true"><polygon points="0.0,-14.0 3.5,-4.9 13.3,-4.3 5.7,1.9 8.2,11.3 0.0,6.0 -8.2,11.3 -5.7,1.9 -13.3,-4.3 -3.5,-4.9" fill="#F3D774" stroke="#C8323C" stroke-width="2.2"/></svg></span>入口（この1か所だけ）　<span class="k x">×</span>入らないでください（集落の生活道路）　<span class="k dot">…</span>行き（国道11号→入口→駐車場）　<span class="k" style="color:#6B48B3">━</span>帰り</figcaption>
+        <!-- 2026-11-21：行きと帰りを1枚に重ねると混ざって見えたので、2枚に分けてタブで切り替える（本人）。JavaScriptが動かないときは2枚とも縦に並ぶ -->
+        <div class="route-tabs" role="tablist" aria-label="略図の切り替え">
+          <button type="button" role="tab" id="route-tab-go" aria-controls="route-go" aria-selected="true">行き</button>
+          <button type="button" role="tab" id="route-tab-back" aria-controls="route-back" aria-selected="false" tabindex="-1">帰り</button>
+        </div>
+        <div class="route-panel is-active" id="route-go" role="tabpanel" aria-labelledby="route-tab-go">
+          <img src="assets/img/access-map-go.svg" alt="会場までの略図（行き）。国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）の★からだけ会場へ入る。鳴門方面から来たら★で折り返し、入口からの道を上って駐車場（P）へ。国道11号から集落へ入る細い道には×が付いている" width="1000" height="890" loading="lazy">
+          <p class="cap"><span class="k"><svg class="ico-star" viewBox="-16 -16 32 32" aria-hidden="true"><polygon points="0.0,-14.0 3.5,-4.9 13.3,-4.3 5.7,1.9 8.2,11.3 0.0,6.0 -8.2,11.3 -5.7,1.9 -13.3,-4.3 -3.5,-4.9" fill="#F3D774" stroke="#C8323C" stroke-width="2.2"/></svg></span>入口（この1か所だけ）　<span class="k x">×</span>入らないでください（集落の生活道路）　<span class="k dot">…</span>行き（国道11号→入口→駐車場）</p>
+        </div>
+        <div class="route-panel" id="route-back" role="tabpanel" aria-labelledby="route-tab-back">
+          <img src="assets/img/access-map-back.svg" alt="会場からの略図（帰り）。お寺の駐車場に停めた方以外は、駐車場（P）から会場の北と東を回って県道41号へ出る。大麻方面はそのまま県道41号を南へ、鳴門方面・引田方面は県道41号を分かれ道まで戻り、国道11号へ" width="1000" height="890" loading="lazy">
+          <p class="cap"><span class="k" style="color:#6B48B3">━</span>帰り（駐車場→会場の東→県道41号）。お寺の駐車場に停めた方は、誘導員の案内に従ってください</p>
+        </div>
       </figure>
       <div class="mapbox">
         <iframe src="https://maps.google.com/maps?q=34.213667,134.481614&amp;z=15&amp;output=embed" title="車の入口（国道11号と県道41号の分かれ道）の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -1005,6 +1028,24 @@
     s.setAttribute("data-cf-beacon", '{"token": "37c362f5c2854128810d40542394ef0d"}');
     document.body.appendChild(s);
   }
+</script>
+<script>
+  // 略図の行き・帰りのタブ（2026-11-21）
+  (() => {
+    const tabs = [...document.querySelectorAll(".route-tabs [role=tab]")];
+    const show = t => tabs.forEach(b => {
+      const on = b === t;
+      b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1;
+      document.getElementById(b.getAttribute("aria-controls")).classList.toggle("is-active", on);
+    });
+    tabs.forEach((b, i) => {
+      b.addEventListener("click", () => show(b));
+      b.addEventListener("keydown", e => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length]; show(n); n.focus();
+      });
+    });
+  })();
 </script>
 </body>
 </html>
