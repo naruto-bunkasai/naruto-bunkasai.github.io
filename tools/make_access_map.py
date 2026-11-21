@@ -176,7 +176,7 @@ label(sx0, sy0 - 30, "駐車場", 22, NAVY, "middle")
 # 行きのラベル
 label(545, 398, "行き", 26, RED)
 # 凡例（地図の中）
-out.append(f'<g><rect x="20" y="130" width="250" height="92" rx="8" fill="#FDFBF4" stroke="#D9D6CE" stroke-width="2"/>'
+out.append(f'<g><rect x="20" y="130" width="330" height="92" rx="8" fill="#FDFBF4" stroke="#D9D6CE" stroke-width="2"/>'
            f'<path d="M38,160 L98,160" stroke="{RED}" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 14"/>'
            f'<path d="M38,198 L98,198" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round"/></g>')
 label(112, 168, "行き（入口→駐車場）", 20, RED, halo=False)
