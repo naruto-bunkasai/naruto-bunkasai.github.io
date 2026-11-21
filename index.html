@@ -367,7 +367,7 @@
   .js .access .route-panel.is-active { display: block; }
   /* 2026-11-21：タブと注釈の分だけ略図が下がり、横のGoogleマップと高さがずれて見えた（本人）。
      タブ・略図・注釈・Googleマップを同じ格子に並べ、略図とGoogleマップを同じ段（同じ高さ）に置く */
-  .js .access .maps { grid-template-areas: "tabs ." "img map" "cap ."; row-gap: 0; }
+  .js .access .maps { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "tabs ." "img map" "cap ."; row-gap: 0; }
   .js .access .maps .routemap { display: contents; }
   .js .access .maps .route-tabs { grid-area: tabs; }
   .js .access .maps .route-panel.is-active { display: contents; }
@@ -375,7 +375,7 @@
   .js .access .maps .route-panel .cap { grid-area: cap; }
   .js .access .maps .mapbox { grid-area: map; aspect-ratio: auto; height: 100%; }
   @media (max-width: 720px) {
-    .js .access .maps { grid-template-areas: "tabs" "img" "cap" "map"; }
+    .js .access .maps { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tabs" "img" "cap" "map"; }
     .js .access .maps .mapbox { aspect-ratio: 4 / 3; height: auto; margin-top: 20px; }
   }
   .access .routemap .cap { margin: 8px 0 0; font-size: 12.5px; color: var(--navy-soft); }
