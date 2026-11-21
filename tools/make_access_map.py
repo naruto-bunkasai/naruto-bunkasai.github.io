@@ -39,16 +39,28 @@ trunk_pts = {(round(p["lat"], 7), round(p["lon"], 7)) for e in trunk for p in e[
 inside = lambda la, lo: B[0] < la < B[2] and B[1] < lo < B[3]
 
 # 国道11号から細い道が分かれる所（入口の分かれ道を除く）に × を付ける
-crosses = set()
+# 2026-11-21：交差点の上に×があると国道11号が通行止めに見える（本人）ので、細い道を少し入った所に置く
+def walk_from(P, i, step, d):
+    acc = 0.0
+    while 0 <= i + step < len(P):
+        a, b = P[i], P[i + step]; seg = math.hypot(b[0]-a[0], b[1]-a[1])
+        if acc + seg >= d:
+            t = (d - acc) / seg; return (a[0] + (b[0]-a[0])*t, a[1] + (b[1]-a[1])*t)
+        acc += seg; i += step
+    return P[i]
+crosses = []
 for e in small:
-    for p in e["geometry"]:
+    g = e["geometry"]
+    for idx, p in enumerate(g):
         k = (round(p["lat"], 7), round(p["lon"], 7))
         x_, y_ = xy(*k)
         if x_ > W - 150 and y_ < 90: continue              # 「鳴門方面」の文字と重なる端は描かない
         if k in trunk_pts and inside(*k) and (abs(k[0] - J[0]) > 1e-6 or e["id"] == SEA_SIDE_AT_J):
-            if e["id"] == SEA_SIDE_AT_J:
-                g = e["geometry"]; k = (g[1]["lat"], g[1]["lon"])   # 分かれ道のすぐ海側に置く
-            crosses.add(k)
+            P = [xy(q["lat"], q["lon"]) for q in g]
+            step = 1 if idx < len(g) - 1 else -1
+            d = 70 if e["id"] == SEA_SIDE_AT_J else 34       # ★の近くは★と重ならないよう少し遠くへ
+            pos = walk_from(P, idx, step, d)
+            if all(math.hypot(pos[0]-c[0], pos[1]-c[1]) > 20 for c in crosses): crosses.append(pos)
 
 NAVY, RED, GRAY = "#14285A", "#C8323C", "#5E6478"
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">',
@@ -70,9 +82,44 @@ if ag[0]["lat"] > ag[-1]["lat"]: ag.reverse()          # 入口（南）から�
 # 2026-11-21：行きと帰りが混ざって見えると言われたので、行きは駐車場（帰り道の出発点）まで伸ばし、矢印を付ける
 out.append(f'<defs><marker id="ahr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="{RED}"/></marker></defs>')
 out.append(f'<path d="{path(ag)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16" marker-end="url(#ahr)"/>')
+# 2026-11-21：国道11号から入口までの行き道が分かりにくい（本人）ので、国道11号の両方向から★まで、行きを赤の点線で描く。
+# 行きは国道11号の上（道の中心）に描き、帰り（紫）は★から出て左側へずらして重ならないようにする。
+# 鳴門方面から来ると、国道11号を★まで下り、ヘアピンで折り返して入口からの道を上る（赤が2本並ぶのは実際の道のとおり）
+jx1, jy1 = xy(*J)
+tg1 = min(trunk, key=lambda e: min(math.hypot(xy(p["lat"], p["lon"])[0]-jx1, xy(p["lat"], p["lon"])[1]-jy1) for p in e["geometry"]))
+tp1 = [xy(p["lat"], p["lon"]) for p in tg1["geometry"]]
+ti1 = min(range(len(tp1)), key=lambda i: math.hypot(tp1[i][0]-jx1, tp1[i][1]-jy1))
+def out_range(P, R0, R1):            # ★から外へ向かう点列Pの、★から半径R0〜R1の部分（細かく刻む）
+    seg = []
+    for a, b in zip(P, P[1:]):
+        for m in [x/20 for x in range(21)]:
+            q = (a[0]+(b[0]-a[0])*m, a[1]+(b[1]-a[1])*m)
+            d = math.hypot(q[0]-jx1, q[1]-jy1)
+            if R0 <= d <= R1 and (not seg or math.hypot(q[0]-seg[-1][0], q[1]-seg[-1][1]) > 1): seg.append(q)
+            if d > R1: return seg
+    return seg
+def shift(P, off):                   # 進む向きの左へ off ずらす（画面座標なので左の法線は (dy, -dx)）
+    outp = []
+    for i, q in enumerate(P):
+        a = P[max(i-1, 0)]; b = P[min(i+1, len(P)-1)]
+        dx, dy = b[0]-a[0], b[1]-a[1]; L = math.hypot(dx, dy) or 1
+        outp.append((q[0] + dy/L*off, q[1] - dx/L*off))
+    return outp
+LANE = 15
+branches = [tp1[ti1:], list(reversed(tp1[:ti1+1]))]          # ★から国道11号の両方向へ（外向き）
+def ppx1(P): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in P)
+for B_ in branches:
+    far = list(reversed(out_range(B_, 150, 300)))             # ★へ向かう向き（外→内）
+    near = list(reversed(out_range(B_, 0, 154)))
+    for P_, arrow in ((far, True), (near, False)):
+        if len(P_) < 2: continue
+        L_ = P_                                                # 国道11号の中心
+        m = ' marker-end="url(#ahr)"' if arrow else ""
+        out.append(f'<path d="{ppx1(L_)}" fill="none" stroke="#FDFBF4" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 16"/>')
+        out.append(f'<path d="{ppx1(L_)}" fill="none" stroke="{RED}" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 16"{m}/>')
 # × 印
-for la, lo in sorted(crosses):
-    x, y = xy(la, lo); r = 13
+for x, y in crosses:
+    r = 13
     out.append(f'<g stroke="#fff" stroke-width="12" stroke-linecap="round"><path d="M{x-r:.1f},{y-r:.1f}L{x+r:.1f},{y+r:.1f}M{x+r:.1f},{y-r:.1f}L{x-r:.1f},{y+r:.1f}"/></g>')
     out.append(f'<g stroke="{RED}" stroke-width="6" stroke-linecap="round"><path d="M{x-r:.1f},{y-r:.1f}L{x+r:.1f},{y+r:.1f}M{x+r:.1f},{y-r:.1f}L{x-r:.1f},{y+r:.1f}"/></g>')
 # 入口 ★
@@ -154,7 +201,7 @@ tp = px([(p["lat"], p["lon"]) for p in tg["geometry"]])
 ti = min(range(len(tp)), key=lambda i: math.hypot(tp[i][0]-jx0, tp[i][1]-jy0))
 to_11a = walk(tp[ti:], 46, 125)                 # 国道11号を一方へ
 to_11b = walk(list(reversed(tp[:ti+1])), 46, 125)   # 国道11号をもう一方へ
-segs = [px(loop), cut_before(px(to_j), 46), px(to_south), to_11a, to_11b]
+segs = [px(loop), cut_before(px(to_j), 46), px(to_south), shift(to_11a, LANE), shift(to_11b, LANE)]
 def ppx(P): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in P)
 out.append(f'<defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="{PURPLE}"/></marker></defs>')
 for i_, P in enumerate(segs):
@@ -165,9 +212,9 @@ for i_, P in enumerate(segs):
 mx, my = xy(*loop[len(loop)//2])
 label(mx + 24, my, "帰り", 30, PURPLE)
 label(mx + 24, my + 32, "（会場の東を回る）", 22, PURPLE)
-label(545, 592, "鳴門・引田方面は", 20, PURPLE, "end")
-label(545, 618, "入口の分かれ道から", 20, PURPLE, "end")
-label(545, 644, "国道11号へ", 20, PURPLE, "end")
+label(548, 626, "鳴門・引田方面は", 20, PURPLE, "end")
+label(548, 652, "入口の分かれ道から", 20, PURPLE, "end")
+label(548, 678, "国道11号へ", 20, PURPLE, "end")
 # 駐車場（行きの終わり＝帰りの出発点）
 sx0, sy0 = xy(*loop[0])
 out.append(f'<circle cx="{sx0:.1f}" cy="{sy0:.1f}" r="19" fill="{NAVY}" stroke="#FDFBF4" stroke-width="4"/>')
@@ -176,10 +223,10 @@ label(sx0, sy0 - 30, "駐車場", 22, NAVY, "middle")
 # 行きのラベル
 label(545, 398, "行き", 26, RED)
 # 凡例（地図の中）
-out.append(f'<g><rect x="20" y="130" width="330" height="92" rx="8" fill="#FDFBF4" stroke="#D9D6CE" stroke-width="2"/>'
+out.append(f'<g><rect x="20" y="130" width="400" height="92" rx="8" fill="#FDFBF4" stroke="#D9D6CE" stroke-width="2"/>'
            f'<path d="M38,160 L98,160" stroke="{RED}" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 14"/>'
            f'<path d="M38,198 L98,198" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round"/></g>')
-label(112, 168, "行き（入口→駐車場）", 20, RED, halo=False)
+label(112, 168, "行き（国道11号→入口→駐車場）", 20, RED, halo=False)
 label(112, 206, "帰り", 20, PURPLE, halo=False)
 # 方位と出典
 out.append(f'<g transform="translate(60,70)"><path d="M0,-34 L12,6 L0,0 L-12,6Z" fill="{NAVY}"/><text y="34" font-size="22" text-anchor="middle" fill="{NAVY}" {T}>N</text></g>')
