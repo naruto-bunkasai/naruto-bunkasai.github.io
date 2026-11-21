@@ -67,8 +67,9 @@ out.append(f'<path d="{path(school["geometry"])}Z" fill="#F6E3E3" stroke="{RED}"
 top = min(p["lat"] for p in school["geometry"]) + 0.85 * (max(p["lat"] for p in school["geometry"]) - min(p["lat"] for p in school["geometry"]))
 ag = list(access["geometry"])
 if ag[0]["lat"] > ag[-1]["lat"]: ag.reverse()          # 入口（南）から北へ
-ag = [p for p in ag if p["lat"] <= top + 0.0002]
-out.append(f'<path d="{path(ag)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16"/>')
+# 2026-11-21：行きと帰りが混ざって見えると言われたので、行きは駐車場（帰り道の出発点）まで伸ばし、矢印を付ける
+out.append(f'<defs><marker id="ahr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="{RED}"/></marker></defs>')
+out.append(f'<path d="{path(ag)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16" marker-end="url(#ahr)"/>')
 # × 印
 for la, lo in sorted(crosses):
     x, y = xy(la, lo); r = 13
@@ -125,20 +126,61 @@ p41 = [(p["lat"], p["lon"]) for p in W_[675645609]["geometry"]]
 k = min(range(len(p41)), key=lambda i: (p41[i][0]-loop[-1][0])**2 + (p41[i][1]-loop[-1][1])**2)
 to_j = p41[k:]                       # 県道41号を分かれ道（入口）へ戻る
 to_south = list(reversed(p41[k-5:k+1]))   # 大麻方面へ
-def pp(pts): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in (xy(a, b) for a, b in pts))
-out.append(f'<defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10Z" fill="{PURPLE}"/></marker></defs>')
-for seg in (loop, to_j, to_south):
-    out.append(f'<path d="{pp(seg)}" fill="none" stroke="#FDFBF4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>')
-for seg in (loop, to_j, to_south):
-    out.append(f'<path d="{pp(seg)}" fill="none" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah)"/>')
+# 2026-11-21：★に矢印が刺さると事故のように見えると言われたので、★の手前で線を止め、★の先から国道11号の両方向へ矢印を出す
+jx0, jy0 = xy(*J)
+def px(pts): return [xy(a, b) for a, b in pts]
+def cut_before(P, R):                # P（ピクセル）の終わりを、★から半径Rの手前で止める
+    outp = [P[0]]
+    for a, b in zip(P, P[1:]):
+        if math.hypot(b[0]-jx0, b[1]-jy0) >= R: outp.append(b); continue
+        t0, t1 = 0.0, 1.0
+        for _ in range(30):
+            m = (t0 + t1) / 2; q = (a[0]+(b[0]-a[0])*m, a[1]+(b[1]-a[1])*m)
+            if math.hypot(q[0]-jx0, q[1]-jy0) > R: t0 = m
+            else: t1 = m
+        outp.append((a[0]+(b[0]-a[0])*t0, a[1]+(b[1]-a[1])*t0)); break
+    return outp
+def walk(P, R0, R1):                 # ★から外へ向かう点列Pの、半径R0〜R1の部分
+    seg = []
+    for a, b in zip(P, P[1:]):
+        for m in [x/20 for x in range(21)]:
+            q = (a[0]+(b[0]-a[0])*m, a[1]+(b[1]-a[1])*m)
+            d = math.hypot(q[0]-jx0, q[1]-jy0)
+            if R0 <= d <= R1: seg.append(q)
+            if d > R1: return seg
+    return seg
+tg = min(trunk, key=lambda e: min(math.hypot(xy(p["lat"], p["lon"])[0]-jx0, xy(p["lat"], p["lon"])[1]-jy0) for p in e["geometry"]))   # ★を通る国道11号の区間
+tp = px([(p["lat"], p["lon"]) for p in tg["geometry"]])
+ti = min(range(len(tp)), key=lambda i: math.hypot(tp[i][0]-jx0, tp[i][1]-jy0))
+to_11a = walk(tp[ti:], 46, 125)                 # 国道11号を一方へ
+to_11b = walk(list(reversed(tp[:ti+1])), 46, 125)   # 国道11号をもう一方へ
+segs = [px(loop), cut_before(px(to_j), 46), px(to_south), to_11a, to_11b]
+def ppx(P): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in P)
+out.append(f'<defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="{PURPLE}"/></marker></defs>')
+for i_, P in enumerate(segs):
+    if i_ < 3: out.append(f'<path d="{ppx(P)}" fill="none" stroke="#FDFBF4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>')
+for i_, P in enumerate(segs):
+    end = "" if i_ == 1 else ' marker-end="url(#ah)"'          # ★の手前で止める線には矢印を付けない
+    out.append(f'<path d="{ppx(P)}" fill="none" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"{end}/>')
 mx, my = xy(*loop[len(loop)//2])
-label(mx + 24, my, "帰り道", 30, PURPLE)
+label(mx + 24, my, "帰り", 30, PURPLE)
 label(mx + 24, my + 32, "（会場の東を回る）", 22, PURPLE)
 label(545, 592, "鳴門・引田方面は", 20, PURPLE, "end")
-label(545, 618, "入口の分かれ道へ戻り", 20, PURPLE, "end")
+label(545, 618, "入口の分かれ道から", 20, PURPLE, "end")
 label(545, 644, "国道11号へ", 20, PURPLE, "end")
+# 駐車場（行きの終わり＝帰りの出発点）
 sx0, sy0 = xy(*loop[0])
-label(sx0 - 8, sy0 - 12, "駐車場から", 20, PURPLE, "end")
+out.append(f'<circle cx="{sx0:.1f}" cy="{sy0:.1f}" r="19" fill="{NAVY}" stroke="#FDFBF4" stroke-width="4"/>')
+out.append(f'<text x="{sx0:.1f}" y="{sy0+8:.1f}" font-size="24" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">P</text>')
+label(sx0, sy0 - 30, "駐車場", 22, NAVY, "middle")
+# 行きのラベル
+label(545, 398, "行き", 26, RED)
+# 凡例（地図の中）
+out.append(f'<g><rect x="20" y="130" width="250" height="92" rx="8" fill="#FDFBF4" stroke="#D9D6CE" stroke-width="2"/>'
+           f'<path d="M38,160 L98,160" stroke="{RED}" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 14"/>'
+           f'<path d="M38,198 L98,198" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round"/></g>')
+label(112, 168, "行き（入口→駐車場）", 20, RED, halo=False)
+label(112, 206, "帰り", 20, PURPLE, halo=False)
 # 方位と出典
 out.append(f'<g transform="translate(60,70)"><path d="M0,-34 L12,6 L0,0 L-12,6Z" fill="{NAVY}"/><text y="34" font-size="22" text-anchor="middle" fill="{NAVY}" {T}>N</text></g>')
 label(W - 14, H - 12, "地図データ © OpenStreetMap contributors", 15, GRAY, "end")
