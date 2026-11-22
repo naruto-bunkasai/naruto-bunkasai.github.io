@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 890" role="img" aria-labelledby="t d">
 <title id="t">会場までの略図（行き）</title>
-<desc id="d">国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。鳴門方面から来たら分かれ道で折り返し、入口からの道を上ってグラウンド駐車場（会場の北西の角）・臨時駐車場（会場のすぐ北）へ。満車のときはお寺の駐車場（北東）。国道11号から集落の細い道（×）には入らない。</desc>
+<desc id="d">国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。鳴門方面から来たら分かれ道で折り返し、入口からの道を上ってグラウンド駐車場（会場の北西の角）・臨時駐車場（会場のすぐ北）へ。満車のときはお寺の駐車場（北東）。国道11号から細い道（×）には入らない。</desc>
 <rect width="1000" height="890" fill="#FDFBF4"/>
 <defs><marker id="ahr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3" markerHeight="3" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#C8323C"/></marker><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#6B48B3"/></marker></defs>
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -103,7 +103,7 @@
 <text x="604" y="178" font-size="28" fill="#14285A" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">国道11号</text>
 <g><rect x="20" y="130" width="450" height="92" rx="8" fill="#FDFBF4" stroke="#D9D6CE" stroke-width="2"/><path d="M38,160 L98,160" stroke="#C8323C" stroke-width="9" stroke-linecap="round" stroke-dasharray="2 14"/></g>
 <text x="112" y="168" font-size="20" fill="#C8323C" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700">行き（国道11号→入口→駐車場）</text>
-<text x="38" y="206" font-size="20" fill="#C8323C" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700">×　入らないでください（集落の道）</text>
+<text x="38" y="206" font-size="20" fill="#C8323C" text-anchor="start" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700">×　入らないでください（細い生活道路）</text>
 <g transform="translate(60,70)"><path d="M0,-34 L12,6 L0,0 L-12,6Z" fill="#14285A"/><text y="34" font-size="22" text-anchor="middle" fill="#14285A" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700">N</text></g>
 <text x="986" y="878" font-size="15" fill="#5E6478" text-anchor="end" font-family="Shippori Mincho, Hiragino Mincho ProN, Yu Mincho, serif" font-weight="700" stroke="#FDFBF4" stroke-width="8" paint-order="stroke">地図データ © OpenStreetMap contributors</text>
 </svg>
