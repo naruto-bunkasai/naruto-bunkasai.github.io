@@ -9,6 +9,11 @@
 - 行き：国道11号の両方向から★（入口）まで赤の点線、★で折り返して入口からの道を駐車場（P）まで。集落の細い道には×（交差点の上ではなく、細い道を少し入った所）
 - 2026-11-21：行きの図からも★を外した。★が分かれ道（ヘアピンカーブ）の形を隠してしまう（本人）。入口は引き出し線と「入口はここだけ」で示す
 - 帰り：駐車場から会場の東を回って県道41号へ（紫）。大麻方面は南へ、鳴門・引田方面は分かれ道から国道11号へ。★は描かない（線が★に集まって見えないように）
+2026-11-22：莉奈さんの答え（11/21 18:18、コアのグループ）で直した。Pが会場の外で北に寄りすぎていた。莉奈さんがGoogleマップに書き込んだ画像
+（~/line/鳴門市文化祭 コアメンバー/files/ の S__203333653_0.jpg）を、国道11号と県道41号の分かれ道・道の形で略図に重ねて位置を読んだ。
+- グラウンド駐車場＝会場の北西の角（敷地の中）、臨時駐車場①（空き地）＝入口からの道の、会場のすぐ北、お寺の臨時駐車場②＝北東（帰りの道の脇）
+- 幼稚園のスタッフ駐車場（会場の南）はお客さん用ではないので描かない
+- 行きは臨時駐車場まで。帰りはグラウンドから入口の道を北へ上がり、会場の北から東を回る。お寺に停めた人は学校の方へ戻らず北へ（道が細いため）
 
     python -X utf8 tools/make_access_map.py
 """
@@ -96,7 +101,13 @@ p41 = [xy(p["lat"], p["lon"]) for p in WAYS[ROUTE41]["geometry"]]
 k41 = min(range(len(p41)), key=lambda i: math.hypot(p41[i][0]-loop[-1][0], p41[i][1]-loop[-1][1]))
 to_j = p41[k41:]
 to_south = list(reversed(p41[k41-5:k41+1]))
-PARK = loop[0]
+# 駐車場（莉奈さんの画像を重ねて読んだ位置。略図の座標）
+P_GROUND = (538, 430)
+P_RINJI = (531, 372)                   # 入口からの道の上
+P_OTERA = (698, 368)
+kg = min(range(len(ag)), key=lambda i: math.hypot(ag[i][0]-P_GROUND[0], ag[i][1]-P_GROUND[1]))
+GO_PATH = [q for q in ag if q[1] > P_RINJI[1] + 26]           # 行き：入口から臨時駐車場の手前まで
+BACK_START = ag[kg:] + loop[1:]                                  # 帰り：グラウンドから入口の道を北へ、会場の北から東へ
 
 # 集落の細い道の×（交差点の上ではなく、細い道を少し入った所）
 crosses = []
@@ -129,9 +140,9 @@ def build(mode):
         s = f'<text x="{x:.0f}" y="{y:.0f}" font-size="{size}" fill="{fill}" text-anchor="{anchor}" {T}'
         out.append(s + (f' stroke="{CREAM}" stroke-width="8" paint-order="stroke">' if halo else ">") + f"{text}</text>")
     title = "会場までの略図（行き）" if go else "会場からの略図（帰り）"
-    desc = ("国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。鳴門方面から来たら分かれ道で折り返し、入口からの道を上って駐車場（P）へ。国道11号から集落の細い道（×）には入らない。"
+    desc = ("国道11号を通り、県道41号との分かれ道（ヘアピンカーブ）からだけ会場へ入る。鳴門方面から来たら分かれ道で折り返し、入口からの道を上ってグラウンド駐車場（会場の北西の角）・臨時駐車場（会場のすぐ北）へ。満車のときはお寺の駐車場（北東）。国道11号から集落の細い道（×）には入らない。"
             if go else
-            "お寺の駐車場に停めた方以外は、駐車場（P）から会場の北と東を回って県道41号へ出る。大麻方面はそのまま県道41号を南へ、鳴門方面・引田方面は県道41号を分かれ道まで戻り、国道11号へ。")
+            "グラウンド・臨時駐車場からは、入口からの道を北へ上がり、会場の北と東を回って県道41号へ出る。大麻方面はそのまま県道41号を南へ、鳴門方面・引田方面は県道41号を分かれ道まで戻り、国道11号へ。お寺の駐車場に停めた方は、学校の方へ戻らず北へ。")
     out += [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">',
             f'<title id="t">{title}</title>', f'<desc id="d">{desc}</desc>',
             f'<rect width="{W}" height="{H}" fill="{CREAM}"/>',
@@ -158,24 +169,29 @@ def build(mode):
                 out.append(f'<path d="{ppx(P_)}" fill="none" stroke="{CREAM}" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 16"/>')
                 out.append(f'<path d="{ppx(P_)}" fill="none" stroke="{RED}" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 16"{m}/>')
         # ★で折り返して入口からの道を駐車場まで
-        out.append(f'<path d="{ppx(ag)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16" marker-end="url(#ahr)"/>')
+        out.append(f'<path d="{ppx(GO_PATH)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16" marker-end="url(#ahr)"/>')
         for x, y in crosses:
             r = 13
             for col, w_ in (("#fff", 12), (RED, 6)):
                 out.append(f'<g stroke="{col}" stroke-width="{w_}" stroke-linecap="round"><path d="M{x-r:.1f},{y-r:.1f}L{x+r:.1f},{y+r:.1f}M{x+r:.1f},{y-r:.1f}L{x-r:.1f},{y+r:.1f}"/></g>')
     else:
         # 帰り：駐車場→県道41号→（南へ）／（分かれ道から国道11号の両方向へ）。★は描かず、分かれ道を通り抜ける1本の線にする
-        segs = [loop, to_south] + [to_j + within(Bo, 1, 170) for Bo in TRUNK_OUT]
+        segs = [BACK_START, to_south] + [to_j + within(Bo, 1, 170) for Bo in TRUNK_OUT]
         for P_ in segs:
             out.append(f'<path d="{ppx(P_)}" fill="none" stroke="{CREAM}" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>')
         for P_ in segs:
             out.append(f'<path d="{ppx(P_)}" fill="none" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah)"/>')
 
-    # 駐車場
-    sx0, sy0 = PARK
-    out.append(f'<circle cx="{sx0:.1f}" cy="{sy0:.1f}" r="19" fill="{NAVY}" stroke="{CREAM}" stroke-width="4"/>')
-    out.append(f'<text x="{sx0:.1f}" y="{sy0+8:.1f}" font-size="24" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">P</text>')
-    label(sx0, sy0 - 30, "駐車場", 22, NAVY, "middle")
+    # 駐車場（3か所）
+    def pmark(x, y, r=17):
+        out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="{NAVY}" stroke="{CREAM}" stroke-width="4"/>')
+        out.append(f'<text x="{x:.1f}" y="{y+7:.1f}" font-size="21" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">P</text>')
+    for x, y in (P_GROUND, P_RINJI, P_OTERA): pmark(x, y)
+    label(P_RINJI[0] + 26, P_RINJI[1] + 7, "臨時駐車場", 20, NAVY)
+    label(P_GROUND[0] + 26, P_GROUND[1] + 7, "グラウンド駐車場", 20, NAVY)
+    # お寺のPは「臨時駐車場」の文字のすぐ右に来るので、名前は道の北に置いて引き出し線でつなぐ
+    out.append(f'<path d="M{P_OTERA[0]+6},{P_OTERA[1]-66} L{P_OTERA[0]+1},{P_OTERA[1]-19}" stroke="{NAVY}" stroke-width="2.5" fill="none"/>')
+    label(P_OTERA[0] + 14, P_OTERA[1] - 72, "お寺の駐車場（満車のとき）", 18, NAVY, "middle")
     # 会場
     sx = sum(xy(p["lat"], p["lon"])[0] for p in school["geometry"]) / len(school["geometry"])
     sy = sum(xy(p["lat"], p["lon"])[1] for p in school["geometry"]) / len(school["geometry"])
@@ -189,7 +205,6 @@ def build(mode):
         out.append(f'<path d="M{jx-5:.0f},{jy-14:.0f} L{jx-26:.0f},{jy-96:.0f}" stroke="{RED}" stroke-width="3" fill="none"/>')
         label(jx - 20, jy - 140, "入口はここだけ", 32, RED, "end")
         label(jx - 20, jy - 106, "（ヘアピンカーブ）", 24, RED, "end")
-        label(545, 398, "行き", 26, RED)
     else:
         mx, my = loop[len(loop)//2]
         label(mx + 24, my, "帰り", 30, PURPLE)
@@ -212,10 +227,11 @@ def build(mode):
         label(112, 168, "行き（国道11号→入口→駐車場）", 20, RED, halo=False)
         label(38, 206, "×　入らないでください（集落の道）", 20, RED, halo=False)
     else:
-        out.append(f'<g><rect x="20" y="130" width="450" height="92" rx="8" fill="{CREAM}" stroke="#D9D6CE" stroke-width="2"/>'
+        out.append(f'<g><rect x="20" y="130" width="450" height="120" rx="8" fill="{CREAM}" stroke="#D9D6CE" stroke-width="2"/>'
                    f'<path d="M38,160 L98,160" stroke="{PURPLE}" stroke-width="8" stroke-linecap="round"/></g>')
         label(112, 168, "帰り（駐車場→会場の東→県道41号）", 20, PURPLE, halo=False)
-        label(38, 206, "お寺の駐車場の方は、誘導員の案内に従ってください", 17, NAVY, halo=False)
+        label(38, 205, "お寺の駐車場の方は、学校の方へ戻らず北へ", 18, NAVY, halo=False)
+        label(38, 233, "（誘導員の案内に従ってください）", 18, NAVY, halo=False)
     out.append(f'<g transform="translate(60,70)"><path d="M0,-34 L12,6 L0,0 L-12,6Z" fill="{NAVY}"/><text y="34" font-size="22" text-anchor="middle" fill="{NAVY}" {T}>N</text></g>')
     label(W - 14, H - 12, "地図データ © OpenStreetMap contributors", 15, GRAY, "end")
     out.append("</svg>")
