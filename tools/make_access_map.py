@@ -106,7 +106,7 @@ P_GROUND = (538, 430)
 P_RINJI = (531, 372)                   # 入口からの道の上
 P_OTERA = (698, 368)
 kg = min(range(len(ag)), key=lambda i: math.hypot(ag[i][0]-P_GROUND[0], ag[i][1]-P_GROUND[1]))
-GO_PATH = [q for q in ag if q[1] > P_RINJI[1] + 26]           # 行き：入口から臨時駐車場の手前まで
+GO_PATH = [q for q in ag if q[1] > P_RINJI[1]] + [P_RINJI]    # 行き：入口から臨時駐車場まで（矢印は付けず点線だけ。2026-11-22、本人）
 BACK_START = ag[kg:] + loop[1:]                                  # 帰り：グラウンドから入口の道を北へ、会場の北から東へ
 
 # 集落の細い道の×（交差点の上ではなく、細い道を少し入った所）
@@ -169,7 +169,7 @@ def build(mode):
                 out.append(f'<path d="{ppx(P_)}" fill="none" stroke="{CREAM}" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 16"/>')
                 out.append(f'<path d="{ppx(P_)}" fill="none" stroke="{RED}" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 16"{m}/>')
         # ★で折り返して入口からの道を駐車場まで
-        out.append(f'<path d="{ppx(GO_PATH)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16" marker-end="url(#ahr)"/>')
+        out.append(f'<path d="{ppx(GO_PATH)}" fill="none" stroke="{RED}" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 16"/>')
         for x, y in crosses:
             r = 13
             for col, w_ in (("#fff", 12), (RED, 6)):
