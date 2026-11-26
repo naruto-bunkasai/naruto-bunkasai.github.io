@@ -90,6 +90,56 @@ def marker(x, y, n, pid=None):
     return f'<a href="kikaku/?program={pid}">{m}</a>' if pid else m
 
 
+def text_w(t, size):
+    """字の幅の見積もり（全角は1字＝size、半角は0.6字）"""
+    return sum(size * (0.6 if ord(c) < 0x2000 else 1.0) for c in t)
+
+
+# 長い名前の、改行してよい所（1行に収まらないときに順に試す）
+BREAKS = {"プラネタリウム": ["プラネ", "タリウム"], "ワークショップ": ["ワーク", "ショップ"],
+          "anon・いも棒": ["anon・", "いも棒"], "給食デザート": ["給食", "デザート"], "販売ブース": ["販売", "ブース"]}
+
+# 小さすぎて中に字が入らない部屋：(部屋名, 縦長か) -> (字を置く図面の座標X, Y, 寄せ方)
+OUTSIDE = {("購買室", False): (51.15, 18.0, "middle"),   # 横長：すぐ北の廊下
+           ("購買室", True): (51.15, 11.4, "start")}     # 縦長：すぐ南の建物の外
+
+
+def room_text(cx, cy, rw, rh, t1, t2, m, pid):
+    """部屋の中に名前（と番号）を、幅に収まるように置く。収まらなければ字を小さくし、それでもだめなら改行する"""
+    avail = rw - 8
+    big = bool(m)
+    lines = [(t, 14 if big else 12.5, 11.0) for t in [t1] if t] + [(t, 13 if big else 11.5, 11.0) for t in [t2] if t]
+    out = []
+    for t, size, least in lines:
+        fit = next((k for k in (1.0, 0.92, 0.85, 0.8) if text_w(t, size) * k <= avail and size * k >= least), None)
+        if fit:
+            out.append((t, size * fit))
+        elif t in BREAKS:
+            for part in BREAKS[t]:
+                out.append((part, min(size, max(10.5, avail / max(1, text_w(part, 1))))))
+        else:
+            out.append((t, max(10, avail / max(1, text_w(t, 1)))))
+    gap = 3
+    total = sum(sz + gap for _, sz in out) - gap
+    if not out:
+        return []
+    wmax = max(text_w(t, sz) for t, sz in out)
+    side = bool(m) and rh < total + 34 and rw >= wmax + 40   # 低くて横に広い部屋：番号を名前の上ではなく左に置く
+    tx = cx + (13 if side else 0)
+    top = cy - total / 2 + (11 if m and not side else 0)
+    res = []
+    for t, sz in out:
+        top += sz
+        res.append(label(tx, top - 1, t, round(sz, 1), NAVY if big else MUTED))
+        top += gap
+    if m:
+        if side:
+            res.append(marker(tx - wmax / 2 - 14, cy, m, pid))
+        else:
+            res.append(marker(cx, cy - total / 2 - 7, m, pid))
+    return res
+
+
 def tag(v, xw, yw, text, n=None, pid=None, sub=None, size=14):
     """図面の座標に、企画の名前と番号を置く。番号は画面の上で名前のすぐ上（向きを変えても重ならない）"""
     x, y = v.p(xw, yw)
@@ -97,7 +147,7 @@ def tag(v, xw, yw, text, n=None, pid=None, sub=None, size=14):
     if sub:
         out.append(label(x, y + 20, sub, 11, MUTED, 500))
     if n:
-        out.append(marker(x, y - 15, n, pid))
+        out.append(marker(x, y - 19, n, pid))
     return out
 
 
@@ -136,13 +186,14 @@ def floor(v, rooms, assign):
             if min(x1 - x0, y1 - y0) >= 4.5:  # 小さい部屋（トイレなど）には字を入れない（隣と重なるため）
                 l.append(label(cx, cy + 4.5, "入れません", 12, GRAY_TXT))
             continue
-        off = 9 if m else 0
-        if t1:
-            l.append(label(cx, cy + off + (-7 if t2 else 5), t1, 14 if m else 12.5, NAVY if m else MUTED))
-        if t2:
-            l.append(label(cx, cy + off + 11, t2, 13 if m else 11.5, NAVY if m else MUTED))
-        if m:
-            l.append(marker(cx, cy - 22, m, pid))
+        rx, ry, rw, rh = v.box(*max(r["rects"], key=lambda q: (q[2]-q[0])*(q[3]-q[1])))
+        ov = OUTSIDE.get((r["name"], v.tall))
+        if ov:  # 部屋が小さすぎる：部屋のすぐ外の空いた所に1行で書く
+            xw, yw, anchor = ov
+            ox, oy = v.p(xw, yw)
+            l.append(label(ox, oy + 4, t1 + t2, 11.5, MUTED, 700, anchor))
+            continue
+        l += room_text(cx, cy, rw, rh, t1, t2, m, pid)
     return b, l
 
 
@@ -156,7 +207,7 @@ def svg(fl, tall):
         (ax, ay), (bx, by) = v.p(40.35, 28.0 if tall else 29.3), v.p(40.35, 25.9)
         l.append(f'<path d="M{ax:.1f},{ay:.1f} L{bx:.1f},{by:.1f}" stroke="{RED}" stroke-width="2.4" marker-end="url(#fm-arr)"/>')
         if tall:
-            l.append(label(ax - 4, ay + 22, "入口・出口", 12.5, RED, 700, "start"))
+            l.append(label(ax + 26, ay + 5, "入口・出口", 12.5, RED, 700, "start"))
         else:
             ex, ey = v.p(40.35, 27.6)
             l.append(label(ex + 8, ey + 5, "入口・出口", 13, RED, 700, "start"))
@@ -170,7 +221,7 @@ def svg(fl, tall):
         v = View(tall, 6.0, 72.0, 3.5, 29.5, 12.0) if tall else View(tall, 6.0, 72.0, -1.0, 29.5, 11.0)
         b, l = floor(v, V.F2, A2)
         b.append(rect(v, (60.6, 12.0, 69.0, 14.4), COL["hall"], sw=1.2, extra=' stroke-dasharray="4 3"'))
-        wx, wy = v.p(64.8, 11.0 if not tall else 9.0)
+        wx, wy = v.p(64.8, 10.2 if not tall else 9.0)
         l.append(label(wx, wy + 4, "渡り廊下", 11, MUTED, 500))
         b.append(rect(v, (69.0, 4.5 if tall else 1.0, 71.8, 26.0), COL["all"], sw=1.8))
         gx, gy = v.p(70.4, 13.5)
@@ -184,7 +235,7 @@ def svg(fl, tall):
         cx, cy = v.p(37.0, 19.4)
         l.append(label(cx, cy + 4, "飲食スペース", 12, MUTED))
         tx, ty = v.p(45.75, 25.2)
-        l.append(label(tx, ty + 4, "お手洗いは1階へ", 11, GRAY_TXT))
+        l += [label(tx, ty - 3, "お手洗いは", 11.5, GRAY_TXT), label(tx, ty + 12, "1階へ", 11.5, GRAY_TXT)]
         title = ("会場マップ 校舎2階と体育館。2階にプラネタリウムカフェ、ハンドメイドワークショップ、縁日、資料室、フリマ。"
                  "東の渡り廊下から体育館のステージへ。2階のお手洗いは使えない。灰色の部屋には入れない")
     w, h = v.size()
