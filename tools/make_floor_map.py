@@ -140,7 +140,7 @@ def svg(fl):
               label(sx(45.7), sy(25.6), "お手洗いは1階へ", 9.5, MUTED)]
         h = sy(29.5) + PAD
         title = "会場マップ 校舎2階と体育館。2階にプラネタリウムカフェ、ハンドメイドワークショップ、縁日、資料室、フリマ。東の渡り廊下から体育館のステージへ。2階のお手洗いは使えない"
-    w = sx(-3.3) + PAD
+    w = sx(-3.3 if fl == 1 else 6.0) + PAD   # 2階は校舎の西の端（給食室の上）が無いので、その分を切る
     defs = ('<defs><pattern id="fm-hatch" width="7" height="7" patternUnits="userSpaceOnUse" '
             'patternTransform="rotate(45)"><rect width="7" height="7" fill="#fff"/>'
             '<line x1="0" y1="0" x2="0" y2="7" stroke="#CFCBC2" stroke-width="2"/></pattern>'
