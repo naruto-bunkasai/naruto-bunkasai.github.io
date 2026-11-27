@@ -48,12 +48,27 @@ figcaption { text-align: right; margin-top: 7px; color: #5e6982; font-size: 11px
 .information h2 { font-size: 22px; font-weight: 500; margin-bottom: 15px; }
 .information dl { margin: 0; }
 .information dl > div { display: grid; grid-template-columns: 7em minmax(0,1fr); gap: 10px; border-top: 1px solid #14285a30; padding: 10px 0; font-size: 13px; }
-.information dd { margin: 0; white-space: pre-line; } /* 2026-11-27：ステージのタイムテーブルを改行で並べるため */
+.information dd { margin: 0; }
 .pending { color: #65718b; font-size: 12px; }
 .fee-note { font-size: 11px; margin-top: 12px; line-height: 1.8; }
 .caution { margin-top: 14px; padding: 11px 14px; border-left: 3px solid #C8323C; background: #ffffff8c; font-size: 12px; line-height: 1.8; }
 .caution-h { font-weight: 700; color: #C8323C; margin-bottom: 2px; }
 .caution[hidden] { display: none; }
+/* 2026-11-27：タイムテーブル。ご高齢の方にも読めるよう、ゴシックの太字で大きく */
+.timetable { margin-top: 48px; padding: 30px 34px 26px; background: #fff; border: 2px solid var(--ink); border-radius: 6px; }
+.timetable[hidden] { display: none; }
+.timetable .eyebrow { margin-bottom: 4px; }
+.timetable h2 { font-size: clamp(26px,3.2vw,34px); font-weight: 700; letter-spacing: .06em; margin-bottom: 16px; }
+.tt-list { list-style: none; margin: 0; padding: 0; font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif; }
+.tt-list li { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 4px 18px; align-items: baseline; padding: 14px 12px; border-top: 1px solid #14285a30; }
+.tt-list li:last-child { border-bottom: 1px solid #14285a30; }
+.tt-time { font-size: 22px; font-weight: 800; letter-spacing: .02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tt-body strong { font-size: 21px; font-weight: 800; }
+.tt-body small { display: block; font-size: 16px; font-weight: 700; color: #3d4560; margin-top: 2px; }
+.tt-list li.is-candy { background: var(--soft); border-left: 6px solid var(--red); }
+.tt-list li.is-candy .tt-time, .tt-list li.is-candy strong { color: var(--red); }
+.tt-list li.is-night { color: #3d4560; }
+.tt-note { margin-top: 14px; font-size: 15px; font-weight: 700; }
 .coming { padding: 31px 35px 25px; background: #e9ebf2; }
 .coming .eyebrow { margin-bottom: 10px; }
 .coming-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 35px; }
@@ -109,6 +124,10 @@ figcaption { text-align: right; margin-top: 7px; color: #5e6982; font-size: 11px
   .about h2 { font-size:27px; margin-bottom:15px; }
   .body-copy { font-size:14px; line-height:2.1; }
   .information { padding:22px 20px 20px; }
+  .timetable { margin-top:32px; padding:22px 16px 20px; }
+  .tt-list li { grid-template-columns:minmax(0,1fr); padding:12px 10px; }
+  .tt-time { font-size:20px; }
+  .tt-body strong { font-size:20px; }
   .information dl > div { grid-template-columns:6em minmax(0,1fr); font-size:12px; }
   .coming { padding:25px 22px 20px; }
   .coming-row { grid-template-columns:minmax(0,1fr); gap:15px; }

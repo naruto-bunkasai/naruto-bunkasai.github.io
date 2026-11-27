@@ -43,6 +43,31 @@
     caution.hidden = !program.caution;
     if (program.caution) lines("program-caution-text", program.caution, "br");
 
+    // タイムテーブル（2026-11-27）
+    const tt = document.getElementById("timetable");
+    tt.hidden = !program.timetable;
+    const ttList = document.getElementById("timetable-list");
+    ttList.replaceChildren();
+    for (const item of program.timetable || []) {
+      const li = document.createElement("li");
+      if (item.kind) li.className = "is-" + item.kind;
+      const time = document.createElement("span");
+      time.className = "tt-time";
+      time.textContent = item.end ? item.start + "〜" + item.end : item.start + "〜";
+      const body = document.createElement("span");
+      body.className = "tt-body";
+      const name = document.createElement("strong");
+      name.textContent = item.name;
+      body.append(name);
+      if (item.who) {
+        const who = document.createElement("small");
+        who.textContent = item.who;
+        body.append(who);
+      }
+      li.append(time, body);
+      ttList.append(li);
+    }
+
     const information = document.getElementById("program-information");
     information.replaceChildren();
     for (const name of program.rows) {
