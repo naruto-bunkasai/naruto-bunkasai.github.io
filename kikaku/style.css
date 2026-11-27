@@ -48,7 +48,7 @@ figcaption { text-align: right; margin-top: 7px; color: #5e6982; font-size: 11px
 .information h2 { font-size: 22px; font-weight: 500; margin-bottom: 15px; }
 .information dl { margin: 0; }
 .information dl > div { display: grid; grid-template-columns: 7em minmax(0,1fr); gap: 10px; border-top: 1px solid #14285a30; padding: 10px 0; font-size: 13px; }
-.information dd { margin: 0; }
+.information dd { margin: 0; white-space: pre-line; } /* 2026-11-27：ステージのタイムテーブルを改行で並べるため */
 .pending { color: #65718b; font-size: 12px; }
 .fee-note { font-size: 11px; margin-top: 12px; line-height: 1.8; }
 .caution { margin-top: 14px; padding: 11px 14px; border-left: 3px solid #C8323C; background: #ffffff8c; font-size: 12px; line-height: 1.8; }

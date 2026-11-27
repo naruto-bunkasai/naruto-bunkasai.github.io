@@ -560,7 +560,7 @@
 <!--
   検索向けの情報（2026-11-19）。正規のURLは github.io（Cloudflareの naruto-bunkasai.pages.dev は同じ中身の写しなので、上の canonical で github.io に寄せる）。
   下はイベントの構造化データ（schema.org の Event）。日時・会場・料金を変えたら、ここも直す。確かめ方：https://search.google.com/test/rich-results
-  2026-11-20：Search Consoleの「改善できるアイテム」を受けて、offers.validFrom（HPの本番公開日 11/18）と主催の鳴門市の url を足した。performer（出演者）は決まってから足す
+  2026-11-20：Search Consoleの「改善できるアイテム」を受けて、offers.validFrom（HPの本番公開日 11/18）と主催の鳴門市の url を足した。performer（出演者）は決まってから足す。2026-11-27、ステージのタイムスケジュール（ののこさん 11/27 17:17）の出演者で足した
 -->
 <script type="application/ld+json">
 {
@@ -573,6 +573,13 @@
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "isAccessibleForFree": true,
+  "performer": [
+    { "@type": "PerformingGroup", "name": "リッチグラム" },
+    { "@type": "PerformingGroup", "name": "カピバラノキモチ" },
+    { "@type": "MusicGroup", "name": "エンドルユーロ" },
+    { "@type": "MusicGroup", "name": "タキーラ" },
+    { "@type": "Person", "name": "ゆりな" }
+  ],
   "inLanguage": "ja",
   "url": "https://naruto-bunkasai.github.io/",
   "image": ["https://naruto-bunkasai.github.io/assets/img/ogp.jpg"],
@@ -850,7 +857,7 @@
         </details>
         <details>
           <summary>各企画の時間やステージのタイムテーブルは？</summary>
-          <div class="a"><p>決まり次第、このページと<a href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">公式Instagram</a>でお知らせします。点灯式は17:15ごろの予定です。</p></div>
+          <div class="a"><p>ステージは12:40から17:00まで、体育館で開きます。12:40と14:10にはお菓子まき、午後はダンス・漫才・バンド・弾き語りです（<a href="kikaku/?program=stage">タイムテーブル</a>）。時間や内容は変わることがあります。各企画の時間は、それぞれの企画のページと<a href="https://www.instagram.com/naruto_bunkasai/" target="_blank" rel="noopener">公式Instagram</a>でお知らせします。点灯式は17:15ごろの予定です。</p></div>
         </details>
         <details data-volunteer>
           <summary>ボランティアとして参加できますか？</summary>
